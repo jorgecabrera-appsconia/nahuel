@@ -1,0 +1,16 @@
+{
+  "name": "Cálculo Caída de Tensión",
+  "short_name": "CaídaTensión",
+  "description": "Simulador de cálculo y dimensionamiento de conductores eléctricos por Caída de Tensión",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#060913",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "./images/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}

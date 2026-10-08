@@ -1,0 +1,433 @@
+================================================================================
+DIRECCIÓN DE EDUCACIÓN TÉCNICO PROFESIONAL (ETP)
+ESCUELA DE EDUCACIÓN SECUNDARIA TÉCNICA
+ESPECIALIDADES: ELECTROMECÁNICA // ELECTRICIDAD // ENERGÍAS RENOVABLES
+ESPACIO CURRICULAR: ELECTROTECNIA / INSTALACIONES ELÉCTRICAS
+================================================================================
+
+            CUADERNILLO TÉCNICO DE APRENDIZAJE: LA LEY DE OHM
+      Fundamentos Físicos, Formulación Microscópica-Macroscópica,
+              Efectos Térmicos y Aplicaciones de Ingeniería
+
+================================================================================
+DATOS DEL ESTUDIANTE Y DEL CURSO
+--------------------------------------------------------------------------------
+Estudiante: ....................................................................
+Curso y División: .......... Año .......... División
+Docente a Cargo: ...............................................................
+Fecha de Entrega: ...... / ...... / 202...
+Calificación / Dictamen: .......................................................
+================================================================================
+
+ÍNDICE GENERAL
+--------------
+1. FUENTES ACADÉMICAS Y REFERENCIAS UNIVERSITARIAS (UPC, UNC, UNAM)
+2. RESUMEN EJECUTIVO Y CONTEXTO HISTÓRICO
+3. FORMULACIÓN MACROSCÓPICA DE LA LEY DE OHM (V = I * R)
+4. FORMULACIÓN MICROSCÓPICA Y MODELO DE DRUDE (J = sigma * E)
+5. LEY DE POUILLET: GEOMETRÍA DEL CONDUCTOR (R = rho * L / S)
+6. INFLUENCIA DE LA TEMPERATURA Y COEFICIENTE TÉRMICO
+7. LÍMITES DE APLICABILIDAD: MATERIALES ÓHMICOS VS. NO ÓHMICOS
+8. VINCULACIÓN CON LA CAÍDA DE TENSIÓN Y LA REGLAMENTACIÓN AEA 90364
+9. EJEMPLOS PRÁCTICOS RESUELTOS PASO A PASO
+10. GUÍA DE EJERCITACIÓN PARA EL ALUMNO (CON RESPUESTAS)
+11. RÚBRICA DE EVALUACIÓN DOCENTE
+
+
+================================================================================
+1. FUENTES ACADÉMICAS Y REFERENCIAS UNIVERSITARIAS
+================================================================================
+El contenido técnico de este cuadernillo ha sido elaborado y validado tomando
+como referencia publicaciones e investigaciones de tres prestigiosas
+instituciones universitarias de ingeniería técnica:
+
+1.1. UNIVERSIDAD POLITÉCNICA DE CATALUÑA (UPC) — ESPAÑA
+     * Institución: Escola Tècnica Superior d'Enginyeria Industrial de Barcelona
+       (ETSEIB) - Departament de Física i Enginyeria Nuclear.
+     * Documento: "Persistencia de las ideas previas sobre potencial eléctrico,
+       intensidad de corriente y ley de Ohm en estudiantes de Ingeniería".
+     * Autores: Dra. M. Carmen Periago Oliver y Dr. Xavier Bohigas Janoher.
+     * Aporte clave: Análisis de modelos conceptuales, definición rigurosa del
+       campo eléctrico impulsor y límites empíricos de la relación lineal.
+
+1.2. UNIVERSIDAD NACIONAL DE CÓRDOBA (UNC) — ARGENTINA
+     * Institución: Facultad de Ciencias Exactas, Físicas y Naturales (FCEFyN).
+     * Documento: "La Ley de Ohm: resultados de una propuesta experimental
+       desde el enfoque del Aprendizaje Activo de la Física".
+     * Autores: G. N. Dima, M. F. R. Savio y C. A. Glusko (Rev. Enseñanza Física).
+     * Aporte clave: Deducción cinética mediante el modelo de Drude, tiempo medio
+       de colisión (tau), efectos térmicos por disipación Joule y validación en
+       laboratorio de materiales óhmicos frente a filamentos y diodos.
+
+1.3. UNIVERSIDAD NACIONAL AUTÓNOMA DE MÉXICO (UNAM) — MÉXICO
+     * Institución: Facultad de Estudios Superiores (FES) e Instituto de Física.
+     * Documento: "Intensidad de corriente, densidad de corriente y Ley de Ohm
+       en medios conductores".
+     * Autores: S. Sánchez Pérez-Moreno, C. E. Esmerio et al. (DGB - UNAM).
+     * Aporte clave: Formulación tensorial de la conductividad en medios anisótropos,
+       definición de resistencia dinámica (rd = dV/dI) y comportamiento de
+       semiconductores y electrólitos.
+
+
+================================================================================
+2. RESUMEN EJECUTIVO Y CONTEXTO HISTÓRICO
+================================================================================
+En 1827, el físico y matemático alemán Georg Simon Ohm publicó su célebre obra
+"Die galvanische Kette, mathematisch bearbeitet" (El circuito galvánico analizado
+matemáticamente). Ohm descubrió experimentalmente que, para muchos materiales
+conductores sólidos, la corriente eléctrica que los atraviesa es directamente
+proporcional a la diferencia de potencial aplicada entre sus extremos, siempre
+que la temperatura se mantenga constante.
+
+Es fundamental comprender que la Ley de Ohm NO es una ley universal de la
+naturaleza (a diferencia de las leyes de Newton o de conservación de la energía),
+sino una propiedad empírica o constitutiva que describe el comportamiento de
+cierta clase de materiales denominados "conductores lineales" u "óhmicos".
+
+
+================================================================================
+3. FORMULACIÓN MACROSCÓPICA DE LA LEY DE OHM
+================================================================================
+A escala macroscópica (en circuitos eléctricos de taller e ingeniería), la ley se
+expresa mediante tres variables interdependientes:
+
+                         V = I * R
+
+Donde:
+* V (Diferencia de Potencial o Tensión): Expresada en Voltios [V].
+  Representa el trabajo por unidad de carga necesario para mover los portadores
+  entre dos puntos del conductor.
+* I (Intensidad de Corriente): Expresada en Amperios [A].
+  Mide el caudal de carga eléctrica neta que atraviesa una sección del conductor
+  por unidad de tiempo (1 A = 1 Culombio / segundo).
+* R (Resistencia Eléctrica): Expresada en Ohmios [Ohm o letra griega Omega].
+  Representa la oposición física que ofrece el componente al flujo de carga.
+
+Triángulo Nemotécnico de Ohm:
+          /   V   \
+         / -------- \
+        /  I  *  R   \
+       ----------------
+* V = I * R
+* I = V / R
+* R = V / I
+
+Potencia Eléctrica y Efecto Joule asociado:
+* P = V * I = I^2 * R = V^2 / R   [expresada en Watts, W]
+Toda corriente que atraviesa una resistencia disipa energía en forma de calor.
+
+
+================================================================================
+4. FORMULACIÓN MICROSCÓPICA Y MODELO CINÉTICO DE DRUDE
+================================================================================
+A nivel atómico y de física del estado sólido (aportado por los programas de UPC
+y UNC), los electrones libres de la red cristalina metálica se mueven a una
+velocidad térmica caótica promedio del orden de 10^6 m/s, pero su velocidad neta
+promedio es cero en ausencia de campo eléctrico.
+
+Al conectar una fuente, se establece un campo eléctrico E [V/m] en el interior
+del conductor, el cual ejerce una fuerza eléctrica Fe = -e * E sobre cada
+electrón, acelerándolo y confiriéndole una "velocidad de deriva o arrastre" (vd)
+hacia el polo positivo (orden de 10^-4 m/s a 10^-3 m/s).
+
+4.1. Relación Vectorial Constitutiva:
+                    J = sigma * E = (1 / rho) * E
+
+Donde:
+* J: Vector densidad de corriente [A/m^2], definido como la corriente por unidad
+  de área transversal (J = I / S).
+* sigma (Sigma): Conductividad eléctrica del medio [S/m o 1/(Ohm*m)].
+* rho (Rho): Resistividad intrínseca del material [Ohm*m o Ohm*mm^2/m].
+* E: Vector campo eléctrico local [V/m].
+
+4.2. Deducción de Paul Drude (1900):
+Si tau es el tiempo medio libre entre choques sucesivos de los electrones
+contra la red cristalina:
+                    vd = (e * tau / m) * E
+Como J = n * e * vd:
+                    J = (n * e^2 * tau / m) * E
+Por lo tanto, la conductividad intrínseca es:
+                    sigma = (n * e^2 * tau) / m
+
+Donde n es la densidad de electrones libres por metro cúbico, e es la carga
+elemental (1.602 x 10^-19 C) y m es la masa del electrón (9.109 x 10^-31 kg).
+
+
+================================================================================
+5. LEY DE POUILLET: GEOMETRÍA DEL CONDUCTOR
+================================================================================
+La resistencia R observada en el laboratorio no sólo depende del material (rho),
+sino de su geometría física según la Ley de Claude Pouillet:
+
+                         R = rho * ( L / S )
+
+Donde:
+* rho: Resistividad del material [Ohm * mm^2 / m].
+* L: Longitud del conductor [metros].
+* S: Sección transversal o calibre [mm^2].
+
+Conclusiones técnicas indispensables:
+1. Longitud (L): A mayor distancia, mayor resistencia (proporcionalidad directa).
+2. Sección (S): A mayor sección transversal, menor resistencia (inversamente
+   proporcional). Si duplicamos la sección del cable, la resistencia y la caída
+   de tensión se reducen exactamente a la mitad.
+
+
+================================================================================
+6. INFLUENCIA DE LA TEMPERATURA Y COEFICIENTE TÉRMICO (alpha)
+================================================================================
+Las investigaciones universitarias (UNC y UNAM) señalan que la temperatura
+altera drásticamente el valor de rho debido a que las vibraciones térmicas de los
+iones de la red (fonones) aumentan la probabilidad de colisión de los electrones,
+reduciendo el tiempo medio entre choques (tau).
+
+Ecuación de Variación Térmica:
+                    rho(T) = rho_0 * [1 + alpha * (T - T_0)]
+                    R(T)   = R_0   * [1 + alpha * (T - T_0)]
+
+Donde:
+* T_0: Temperatura de referencia (habitualmente 20 °C).
+* alpha (Alfa): Coeficiente térmico de resistencia [1/°C o 1/K].
+
+Valores típicos de ingeniería:
+* Cobre electrolítico (99.9% pureza):
+  - alpha_20 = +0.00393 / °C
+  - rho_20 (reposo a 20 °C) = 0.0178 Ohm * mm^2 / m
+  - rho_70 (servicio continuo a 70 °C con aislación PVC) = 0.0210 Ohm * mm^2 / m
+* Aluminio de uso eléctrico:
+  - alpha_20 = +0.00403 / °C
+  - rho_20 (a 20 °C) = 0.0282 Ohm * mm^2 / m
+  - rho_70 (a 70 °C) = 0.0340 Ohm * mm^2 / m
+
+Comportamiento comparado de materiales:
+a) Metales y aleaciones: alpha > 0 (la resistencia SUBE con el calor).
+b) Semiconductores (Silicio, Germanio, NTC): alpha < 0 (la resistencia BAJA con
+   el calor porque la energía térmica libera portadores de carga).
+c) Carbón y grafito: alpha < 0 (coeficiente térmico negativo).
+
+
+================================================================================
+7. LÍMITES DE APLICABILIDAD: MATERIALES ÓHMICOS VS. NO ÓHMICOS
+================================================================================
+7.1. MATERIALES ÓHMICOS (LINEALES):
+* Presentan una gráfica Voltaje-Corriente (V vs. I) representada por una línea
+  recta que pasa por el origen de coordenadas (0,0).
+* La pendiente de la recta es constante e igual a 1/R (o dV/dI = constante).
+* Ejemplos: Resistores fijos de carbón o película metálica a temperatura
+  constante, alambres de nicrom, conductores de cobre y aluminio dentro de su
+  rango térmico admisible.
+
+7.2. MATERIALES NO ÓHMICOS (NO LINEALES):
+* La relación V / I varía punto a punto según la tensión aplicada o el calor
+  generado por el paso de corriente.
+* Se define la Resistencia Dinámica o Diferencial:
+                           rd = dV / dI != V / I
+* Ejemplos típicos:
+  1. Filamento de lámpara incandescente: A baja tensión está frío y tiene baja
+     resistencia; al calentarse a más de 2000 °C, su resistencia aumenta entre
+     10 y 15 veces. Su curva V-I se curva progresivamente.
+  2. Diodos semiconductores (juntura p-n): No conducen hasta alcanzar la
+     tensión de umbral (~0.7 V en silicio). A partir de allí, la corriente
+     crece exponencialmente con aumentos mínimos de tensión.
+  3. Varistores (MOV): Dispositivos de protección contra sobretensiones que
+     reducen drásticamente su resistencia cuando el voltaje supera un límite.
+  4. Termistores (PTC y NTC): Diseñados para variar deliberadamente su
+     resistencia ante cambios de temperatura ambiental o interna.
+
+
+================================================================================
+8. VINCULACIÓN DIRECTA: LEY DE OHM Y CAÍDA DE TENSIÓN (AEA 90364)
+================================================================================
+En la práctica de instalaciones eléctricas de la escuela técnica, la Caída de
+Tensión (Delta U) es la aplicación directa de la Ley de Ohm a la impedancia del
+conductor que alimenta a la carga:
+
+                         Delta U = I_linea * R_conductor
+
+8.1. En circuitos monofásicos (220 V - Fase y Neutro):
+La corriente debe recorrer el conductor de ida y el de retorno (2 * L):
+          Delta U = (2 * rho * L * I) / S   [Volts]
+          Delta U% = (Delta U / 220 V) * 100%
+
+8.2. En circuitos trifásicos equilibrados (380 V - 3 Fases):
+Por composición fasorial vectorial (desfasaje de 120°):
+          Delta U = (raiz(3) * rho * L * I * cos(phi)) / S   [Volts]
+          Delta U% = (Delta U / 380 V) * 100%
+
+8.3. Límites máximos admisibles según AEA 90364:
+* Línea principal (Medidor a Tablero Principal): Delta U% <= 1.0%
+* Circuitos terminales de Iluminación:           Delta U% <= 3.0%
+* Circuitos terminales de Fuerza Motriz / Tomas: Delta U% <= 5.0%
+
+8.4. Regla de Selección Dual Inmutable:
+La sección adoptada debe satisfacer simultáneamente:
+1. Criterio Térmico:          Ib <= In <= Iz  (no quemar el cable)
+2. Criterio Eléctrico de Ohm: Delta U% <= Delta U%_adm  (no perder tensión)
+-> Se elige SIEMPRE la sección comercial mayor de ambos cálculos.
+
+
+================================================================================
+9. EJEMPLOS PRÁCTICOS RESUELTOS PASO A PASO
+================================================================================
+
+--------------------------------------------------------------------------------
+EJEMPLO RESUELTO 1: Verificación de Resistencia Óhmica y Calentamiento
+--------------------------------------------------------------------------------
+Enunciado:
+Una bobina de contactor industrial tiene arrollados 150 metros de alambre de
+cobre esmaltado de sección 0.25 mm^2.
+a) Calcule la resistencia óhmica de la bobina en frío a 20 °C (rho = 0.0178).
+b) Calcule la resistencia luego de 4 horas de trabajo continuo al alcanzar 75 °C
+   (coeficiente alpha = 0.00393 / °C).
+c) Si se alimenta con 24 V de corriente continua, ¿cuál será la corriente inicial
+   y cuál la corriente en régimen permanente a 75 °C?
+
+Resolución:
+a) Resistencia a 20 °C aplicando Pouillet:
+   R_20 = rho_20 * (L / S) = 0.0178 * (150 / 0.25)
+   R_20 = 0.0178 * 600 = 10.68 Ohmios.
+
+b) Resistencia a 75 °C aplicando coeficiente térmico:
+   Delta_T = 75 °C - 20 °C = 55 °C
+   R_75 = R_20 * [1 + alpha * Delta_T]
+   R_75 = 10.68 * [1 + 0.00393 * 55] = 10.68 * [1 + 0.21615]
+   R_75 = 10.68 * 1.21615 = 12.99 Ohmios (aumento del 21.6%).
+
+c) Corrientes por Ley de Ohm (I = V / R):
+   - En frío (inicio):
+     I_inicio = 24 V / 10.68 Ohm = 2.25 Amperios.
+   - En caliente (régimen):
+     I_regimen = 24 V / 12.99 Ohm = 1.85 Amperios.
+   Conclusión: Al calentarse, la resistencia sube y la corriente se reduce.
+
+--------------------------------------------------------------------------------
+EJEMPLO RESUELTO 2: Caída de Tensión por Ley de Ohm en Taller Escolar
+--------------------------------------------------------------------------------
+Enunciado:
+Se alimenta un calentador monofásico de 3300 W a 220 V ubicado a 40 metros del
+tablero seccional. El instalador utilizó conductor de cobre de 2.5 mm^2.
+Considerando régimen continuo a 70 °C (rho = 0.021 Ohm*mm^2/m):
+a) Calcule la corriente nominal I absorbida.
+b) Calcule la resistencia total de la línea (ida y vuelta).
+c) Calcule la caída de tensión en Volts y porcentual aplicando la Ley de Ohm.
+d) Dictamine si cumple con la norma AEA 90364 (límite 5%).
+
+Resolución:
+a) Corriente nominal:
+   I = P / V = 3300 W / 220 V = 15.00 Amperios.
+
+b) Resistencia total de los dos conductores (Fase + Neutro = 2 * L = 80 m):
+   R_linea = rho_70 * (2 * L / S) = 0.021 * (80 / 2.5)
+   R_linea = 0.021 * 32 = 0.672 Ohmios.
+
+c) Caída de Tensión (Ley de Ohm Delta U = I * R_linea):
+   Delta U = 15.00 A * 0.672 Ohm = 10.08 Voltios.
+   Delta U% = (10.08 V / 220 V) * 100% = 4.58%.
+
+d) Dictamen reglamentario:
+   Como 4.58% <= 5.0%, el conductor de 2.5 mm^2 CUMPLE con la caída admisible.
+   La tensión real en bornes del calentador será: 220 V - 10.08 V = 209.92 V.
+
+
+================================================================================
+10. GUÍA DE EJERCITACIÓN PARA EL ALUMNO
+================================================================================
+
+PROBLEMA 1 (Nivel Básico - Ley de Ohm Directa):
+Un resistor de potencia conectado a una fuente de corriente continua absorbe
+4.2 A cuando se le aplican 48 V.
+a) Determine el valor óhmico de su resistencia.
+b) Calcule la potencia disipada en calor por efecto Joule en Watts.
+* Respuesta: a) R = 11.43 Ohmios; b) P = 201.6 W.
+--------------------------------------------------------------------------------
+Espacio para resolución del alumno:
+
+
+
+
+--------------------------------------------------------------------------------
+
+PROBLEMA 2 (Nivel Medio - Ley de Pouillet y Temperatura):
+Una línea de distribución aérea utiliza conductores de aluminio (rho_20 = 0.028)
+de 35 mm^2 de sección y 250 metros de longitud.
+a) Calcule la resistencia de un solo conductor a 20 °C.
+b) Sabiendo que en verano el conductor alcanza 60 °C (alpha = 0.00403 / °C),
+   calcule la nueva resistencia del conductor.
+* Respuesta: a) R_20 = 0.200 Ohmios; b) R_60 = 0.232 Ohmios.
+--------------------------------------------------------------------------------
+Espacio para resolución del alumno:
+
+
+
+
+--------------------------------------------------------------------------------
+
+PROBLEMA 3 (Nivel Intermedio - Identificación de Componentes No Óhmicos):
+En el laboratorio de la escuela técnica se midieron los siguientes pares (V, I)
+para dos componentes incógnita A y B:
+* Componente A: (2 V, 0.20 A) ; (4 V, 0.40 A) ; (6 V, 0.60 A) ; (8 V, 0.80 A)
+* Componente B: (0.5 V, 0.01 A); (0.7 V, 0.05 A); (0.8 V, 0.25 A); (0.9 V, 0.80 A)
+a) Grafique aproximadamente o calcule la relación R = V / I para cada punto.
+b) Indique cuál componente es óhmico y cuál es no óhmico, justificando con la
+   definición teórica analizada en clase.
+* Respuesta:
+  - Componente A es ÓHMICO (R = 10 Ohmios constante en todos los puntos).
+  - Componente B es NO ÓHMICO (Resistencia dinámica no lineal, típico de un diodo).
+--------------------------------------------------------------------------------
+Espacio para resolución del alumno:
+
+
+
+
+--------------------------------------------------------------------------------
+
+PROBLEMA 4 (Nivel Avanzado - Dimensionamiento Técnico Dual):
+Se debe alimentar un motor monofásico de 2.2 kW a 220 V (cos phi = 0.82)
+instalado a 65 metros del tablero. El conductor de cobre trabajará a 70 °C
+(rho = 0.021 Ohm*mm^2/m). El límite reglamentario AEA es 5% (Delta U_adm = 11 V).
+a) Calcule la corriente nominal Ib.
+b) Por Ley de Ohm, determine la resistencia máxima admisible de la línea.
+c) Despeje y calcule la sección teórica mínima necesaria (S_min).
+d) Adopte la sección comercial normalizada (1.5, 2.5, 4, 6, 10 mm²) y verifique
+   la caída real resultante.
+* Respuesta:
+  a) Ib = 12.20 A;
+  b) R_max = 11 V / 12.20 A = 0.9016 Ohmios;
+  c) S_min = (2 * 0.021 * 65 * 12.20) / 11 = 3.03 mm²;
+  d) Sección adoptada: 4 mm² (con 4 mm², Delta U = 8.33 V -> Delta U% = 3.79% <= 5% CUMPLE).
+--------------------------------------------------------------------------------
+Espacio para resolución del alumno:
+
+
+
+
+--------------------------------------------------------------------------------
+
+
+================================================================================
+11. RÚBRICA Y PLANILLA DE CALIFICACIÓN DOCENTE
+================================================================================
+
+CRITERIO DE EVALUACIÓN                           PUNTAJE MÁX.  OBTENIDO  OBSERV.
+--------------------------------------------------------------------------------
+1. Dominio conceptual de la Ley de Ohm           20 puntos     _______   
+   (V, I, R, unidades del SI y despejes)
+
+2. Aplicación correcta de la Ley de Pouillet     25 puntos     _______   
+   y variación térmica de la resistividad (rho)
+
+3. Diferenciación rigurosa entre materiales      25 puntos     _______   
+   óhmicos y no óhmicos (interpretación V-I)
+
+4. Resolución analítica de problemas de taller   30 puntos     _______   
+   y vinculación con norma técnica AEA 90364
+--------------------------------------------------------------------------------
+CALIFICACIÓN FINAL                               100 PUNTOS    _______   
+
+Fecha de Evaluación: ...... / ...... / 202...
+
+Firma y Sello Docente: .........................................................
+
+================================================================================
+FIN DEL CUADERNILLO TÉCNICO - MATERIAL EDUCATIVO ETP (ARGENTINA)
+================================================================================

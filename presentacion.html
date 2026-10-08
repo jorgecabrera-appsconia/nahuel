@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentación para Proyector: Caída de Tensión en Instalaciones Eléctricas</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700;800&family=Outfit:wght@600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#060913">
+  <link rel="apple-touch-icon" href="images/icon.png">
+  <style>
+    body {
+      background: #060913;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    .presentation-header {
+      background: rgba(11, 19, 41, 0.9);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .presentation-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .pres-card {
+      width: 100%;
+      max-width: 1100px;
+      min-height: 580px;
+      background: radial-gradient(circle at 50% 20%, #172554 0%, #090d1a 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+      padding: 3.5rem 4.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+    }
+    .pres-footer {
+      background: #090d1a;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .kbd-shortcut {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="presentation-header">
+    <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <a href="index.html" style="color: var(--accent-cyan); text-decoration: none; font-size: 0.9rem; font-weight: 700; display: flex; align-items: center; gap: 0.35rem;">
+        <span>⬅️</span> Volver al Portal Web
+      </a>
+      <span style="color: var(--text-dim);">|</span>
+      <span style="font-weight: 700; font-size: 0.95rem;">Escuela Técnica • Clase Magistral de Caída de Tensión</span>
+    </div>
+    <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 0.75rem;">
+      <span>Navegar: <span class="kbd-shortcut">Espacio</span> / <span class="kbd-shortcut">➡</span></span>
+      <span>Retroceder: <span class="kbd-shortcut">⬅</span></span>
+      <span>Notas: <span class="kbd-shortcut">N</span></span>
+      <span>Pantalla Completa: <span class="kbd-shortcut">F</span></span>
+    </div>
+  </header>
+
+  <main class="presentation-body">
+    <div class="pres-card" id="pres-container">
+      <div id="slide-badge" class="slide-badge">Diapositiva 01 / 10</div>
+      <h2 id="slide-heading" class="slide-heading">Cargando diapositiva...</h2>
+      <div id="slide-body" class="slide-body">Contenido...</div>
+    </div>
+  </main>
+
+  <footer class="pres-footer">
+    <div id="slide-counter-display" style="font-family: var(--font-mono); font-weight: 800; color: var(--accent-cyan); font-size: 1.1rem;">
+      1 / 10
+    </div>
+    <div style="display: flex; gap: 0.75rem;">
+      <button class="btn-slide-nav" id="slide-btn-prev">⬅ Anterior</button>
+      <button class="btn-slide-nav" id="slide-btn-next">Siguiente ➡</button>
+      <button class="btn-slide-nav" id="slide-btn-notes">💡 Notas Docente</button>
+      <button class="btn-slide-nav" id="slide-btn-fs">⛶ Pantalla Completa</button>
+    </div>
+  </footer>
+
+  <div class="teacher-notes-box" id="slide-notes-container" style="display: none; position: fixed; bottom: 80px; left: 2rem; right: 2rem; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.8);">
+    <h5>💡 Notas Pedagógicas para la Exposición</h5>
+    <p id="slide-notes-text">Notas para el docente...</p>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    // Atajos de teclado adicionales para pantalla completa 'F' y notas 'N'
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'f' || e.key === 'F') {
+        const container = document.documentElement;
+        if (!document.fullscreenElement) {
+          container.requestFullscreen();
+        } else {
+          document.exitFullscreen();
+        }
+      }
+      if (e.key === 'n' || e.key === 'N') {
+        const notes = document.getElementById('slide-notes-container');
+        if (notes) {
+          notes.style.display = notes.style.display === 'none' ? 'block' : 'none';
+        }
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          console.log('ServiceWorker registration successful with scope: ', reg.scope);
+        }).catch(err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+</body>
+</html>

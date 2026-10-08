@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuadernillo del Estudiante: Caída de Tensión y Dimensionamiento de Conductores</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="apple-touch-icon" href="images/icon.png">
+
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --text: #0f172a;
+      --border: #cbd5e1;
+      --bg-box: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text);
+      line-height: 1.55;
+      background: #f1f5f9;
+      padding: 2rem 1rem;
+    }
+
+    .paper-a4 {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 3rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .school-header {
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 1.25rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .school-title h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.7rem;
+      color: var(--primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .school-title p {
+      font-size: 0.95rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .no-print-bar {
+      max-width: 860px;
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn-action {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .student-data-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 2rem;
+      background: var(--bg-box);
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    h2 {
+      font-family: 'Outfit', sans-serif;
+      color: var(--primary);
+      font-size: 1.3rem;
+      margin: 2rem 0 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.35rem;
+    }
+
+    p {
+      margin-bottom: 0.85rem;
+      font-size: 0.95rem;
+      text-align: justify;
+    }
+
+    .formula-box {
+      background: #eff6ff;
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      border-radius: 0 6px 6px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    .formula-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #475569;
+      font-weight: 400;
+      margin-top: 0.25rem;
+    }
+
+    .problem-box {
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 1.25rem;
+      margin: 1.5rem 0;
+      background: #ffffff;
+      page-break-inside: avoid;
+    }
+
+    .problem-title {
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .work-space {
+      border: 1px dashed #94a3b8;
+      border-radius: 6px;
+      background: #fafafa;
+      height: 120px;
+      margin-top: 0.75rem;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      color: #94a3b8;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--border);
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    /* Estilos de la Carátula Técnica */
+    .cover-sheet {
+      border: 3px double var(--primary);
+      outline: 1px solid #94a3b8;
+      outline-offset: 4px;
+      padding: 2.5rem 2rem;
+      border-radius: 6px;
+      margin-bottom: 2.5rem;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 980px;
+      page-break-after: always;
+    }
+
+    .cover-inst-header {
+      text-align: center;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .cover-inst-sup {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #64748b;
+      margin-bottom: 0.35rem;
+    }
+
+    .cover-school-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .cover-school-sub {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .cover-main-titles {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .cover-badge-doc {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+
+    .cover-subject-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.1rem;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.15;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .cover-subject-subtitle {
+      font-size: 1rem;
+      color: #475569;
+      font-weight: 500;
+      max-width: 650px;
+      margin: 0 auto;
+    }
+
+    /* Imagen del Transformador */
+    .cover-transformer-wrap {
+      margin: 1.5rem 0;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 2px solid var(--primary);
+      box-shadow: 0 10px 25px rgba(30, 58, 138, 0.15);
+      background: #0f172a;
+    }
+
+    .cover-transformer-img {
+      width: 100%;
+      height: 270px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cover-transformer-caption {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 0.85rem 1.25rem;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      border-top: 1px solid #1e293b;
+    }
+
+    .cover-transformer-caption strong {
+      color: #38bdf8;
+      display: block;
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Rótulo Normalizado Técnico */
+    .cover-rotulo-table {
+      width: 100%;
+      border: 2px solid var(--primary);
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+      background: #ffffff;
+    }
+
+    .cover-rotulo-table td {
+      border: 1px solid #94a3b8;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    .cover-rotulo-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 0.15rem;
+    }
+
+    .cover-rotulo-val {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .cover-footer-norm {
+      text-align: center;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-top: 1rem;
+      font-weight: 500;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        padding: 0;
+      }
+
+      .no-print-bar {
+        display: none !important;
+      }
+
+      .paper-a4 {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      .cover-sheet {
+        min-height: 100vh;
+        margin: 0;
+        border: 2px solid #000;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+
+      h2 {
+        page-break-after: avoid;
+      }
+
+      .problem-box,
+      table,
+      .formula-box {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="no-print-bar">
+    <a href="index.html" class="btn-action" style="background: #475569;">
+      ⬅ Volver al Portal Web
+    </a>
+    <button class="btn-action" onclick="window.print()">
+      🖨️ Imprimir Cuadernillo / Guardar PDF (A4)
+    </button>
+  </div>
+
+  <div class="paper-a4">
+
+    <!-- ====================================================================
+         CARÁTULA PRINCIPAL TÉCNICA (PÁGINA 1)
+         ==================================================================== -->
+    <div class="cover-sheet">
+      <div>
+        <!-- Encabezado Institucional Oficial -->
+        <div class="cover-inst-header">
+          <p class="cover-inst-sup">Dirección de Educación Técnico Profesional • Modalidad ETP</p>
+          <h2 class="cover-school-name">Escuela de Educación Secundaria Técnica</h2>
+          <p class="cover-school-sub">Especialidad: Electromecánica // Electricidad // Energías Renovables</p>
+        </div>
+
+        <!-- Títulos del Cuadernillo -->
+        <div class="cover-main-titles">
+          <span class="cover-badge-doc">Cuadernillo Didáctico de Estudio y Taller</span>
+          <h1 class="cover-subject-title">Dimensionamiento y Caída de Tensión</h1>
+          <p class="cover-subject-subtitle">
+            Criterios de Cálculo Analítico, Regla de Selección Dual y Verificación Reglamentaria según <strong>AEA 90364</strong> e <strong>IRAM NM 247-3 / 2178</strong>
+          </p>
+        </div>
+
+        <!-- Imagen del Transformador Eléctrico -->
+        <div class="cover-transformer-wrap">
+          <img src="images/transformador.jpg" alt="Transformador Eléctrico de Potencia y Distribución" class="cover-transformer-img">
+          <div class="cover-transformer-caption">
+            <strong>Transformador de Distribución Eléctrica MT / BT (13.2 kV a 380/220 V)</strong>
+            <span>
+              Subestación transformadora: Origen físico de las tensiones de fase y línea de la red. Desde este punto se transporta la energía hacia los tableros generales, sufriendo caídas de tensión por la impedancia de los conductores hasta los bornes de las cargas.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Rótulo Técnico Normalizado IRAM del Alumno y Docente -->
+        <table class="cover-rotulo-table">
+          <tr>
+            <td style="width: 60%;">
+              <span class="cover-rotulo-label">Espacio Curricular</span>
+              <span class="cover-rotulo-val">Instalaciones Eléctricas / Electrotecnia Aplicada</span>
+            </td>
+            <td style="width: 40%;">
+              <span class="cover-rotulo-label">Curso y División</span>
+              <span class="cover-rotulo-val">...... Año &nbsp; Div: ............</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="cover-rotulo-label">Estudiante</span>
+              <span class="cover-rotulo-val">.......................................................................................</span>
+            </td>
+            <td>
+              <span class="cover-rotulo-label">Ciclo Lectivo</span>
+              <span class="cover-rotulo-val">202...</span>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span class="cover-rotulo-label">Docente a Cargo</span>
+              <span class="cover-rotulo-val">.......................................................................................</span>
+            </td>
+            <td>
+              <span class="cover-rotulo-label">Calificación / Dictamen</span>
+              <span class="cover-rotulo-val">....................................</span>
+            </td>
+          </tr>
+        </table>
+
+        <div class="cover-footer-note" style="margin-top: 0.85rem; font-size: 0.78rem; text-align: center; color: #64748b;">
+          Documento técnico desarrollado conforme a la Reglamentación para la Ejecución de Instalaciones Eléctricas en Inmuebles (AEA 90364).
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         INICIO DEL CONTENIDO DIDÁCTICO (PÁGINA 2 EN ADELANTE)
+         ==================================================================== -->
+    <header class="school-header" style="margin-top: 1rem;">
+      <div class="school-title">
+        <p
+          style="text-transform: uppercase; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em; color: #64748b;">
+          Dirección de Educación Técnico Profesional • Ciclo Superior
+        </p>
+        <h1 style="font-size: 1.5rem;">Unidad Temática: Cálculo de Caída de Tensión</h1>
+        <p>Espacio Curricular: <strong>Instalaciones Eléctricas / Electrotecnia Aplicada</strong></p>
+      </div>
+      <div style="text-align: right; font-size: 0.85rem; color: #64748b;">
+        <span>Normativa de Referencia:</span><br>
+        <strong>AEA 90364 / IRAM NM 247-3</strong>
+      </div>
+    </header>
+
+    <!-- Unidad Temática -->
+    <div
+      style="background: #e0f2fe; border-left: 4px solid #0284c7; padding: 0.85rem 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
+      <strong style="color: #0369a1;">UNIDAD TEMÁTICA:</strong>
+      <span style="color: #0c4a6e;">Cálculo de Caída de Tensión y Criterio Dual de Dimensionamiento de Conductores
+        Eléctricos.</span>
+    </div>
+
+    <!-- 1. Marco Teórico -->
+    <h2>1. Fundamento Físico de la Caída de Tensión</h2>
+    <p>
+      Todo conductor eléctrico real posee resistencia eléctrica ($R$) y reactancia inductiva ($X_L$). Cuando circula
+      corriente, la Ley de Ohm determina que existirá una pérdida de potencial eléctrico entre la fuente de alimentación
+      y los bornes de la carga receptora. Esta diferencia se denomina <strong>Caída de Tensión ($\Delta U$)</strong>.
+    </p>
+    <p>
+      Un exceso de caída de tensión ocasiona:
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1rem; font-size: 0.95rem;">
+      <li><strong>Fuerte reducción del torque en motores:</strong> La cupla de arranque varía con el cuadrado de la
+        tensión ($C \propto U^2$). Una caída del 10% reduce el torque en casi un 20%.</li>
+      <li><strong>Parpadeo y reducción de flujo luminoso en luminarias:</strong> Disminuye notablemente la iluminación y
+        acorta la vida útil de drivers y balastos.</li>
+      <li><strong>Apertura de contactores y relés:</strong> Las bobinas de mando pueden desconectarse intempestivamente
+        si la tensión baja del 85% nominal.</li>
+    </ul>
+
+    <!-- 2. Pouillet y Temperatura -->
+    <h2>2. Resistencia del Conductor y Régimen Térmico</h2>
+    <p>
+      La resistencia óhmica responde a la <strong>Ley de Pouillet</strong>:
+    </p>
+    <div class="formula-box">
+      R = ρ · ( L / S ) &nbsp; [Ω]
+      <div class="formula-desc">Donde ρ = resistividad [Ω·mm²/m], L = longitud física [m], S = sección transversal
+        [mm²].</div>
+    </div>
+
+    <p>
+      <strong>Variación con la temperatura de servicio:</strong> Los conductores se calientan al transportar corriente.
+      Por ello, la reglamentación <strong>AEA 90364</strong> exige calcular con la resistividad a la temperatura máxima
+      de servicio continuo (**70°C para aislación termoplástica de PVC**):
+    </p>
+    <ul style="margin-left: 1.5rem; margin-bottom: 1rem; font-size: 0.95rem;">
+      <li><strong>Cobre a 20°C:</strong> $\rho_{20} = 0.0178 \ \Omega\cdot\text{mm}^2/\text{m}$ (sólo para mediciones de
+        laboratorio en frío).</li>
+      <li><strong>Cobre a 70°C (PVC Régimen Continuo):</strong> $\mathbf{\rho_{70} = 0.0210 \ \Omega\cdot mm^2/m}$
+        <em>(Valor reglamentario obligatorio)</em>.
+      </li>
+      <li><strong>Aluminio a 70°C:</strong> $\mathbf{\rho_{70} = 0.0340 \ \Omega\cdot mm^2/m}$.</li>
+    </ul>
+
+    <!-- 3. Fórmulas de Cálculo -->
+    <h2>3. Fórmulas de Cálculo Reglamentarias</h2>
+
+    <p><strong>A) Circuito Monofásico (220 V - 2 Hilos Fase y Neutro):</strong></p>
+    <div class="formula-box">
+      ΔU = ( 2 · ρ · L · I ) / S &nbsp; [Volts]
+      <div class="formula-desc">Factor 2 representa la longitud total de ida y retorno del conductor (2·L).</div>
+    </div>
+    <div class="formula-box">
+      ΔU% = ( ΔU / 220 ) · 100% &nbsp; | &nbsp; S_mín ≥ ( 2 · ρ · L · I ) / ΔU_adm
+    </div>
+
+    <p><strong>B) Circuito Trifásico Equilibrado (380 V - 3 Fases):</strong></p>
+    <div class="formula-box">
+      ΔU = ( √3 · ρ · L · I · cosφ ) / S &nbsp; [Volts] &nbsp; (√3 ≈ 1.732)
+      <div class="formula-desc">Caída de tensión entre fases. Si la potencia activa trifásica total P está en Watts: ΔU
+        = (ρ · L · P) / (380 · S).</div>
+    </div>
+
+    <!-- 4. Límites Admisibles AEA 90364 -->
+    <h2>4. Límites Máximos Permitidos según AEA 90364</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Uso del Circuito</th>
+          <th>ΔU% Máx. Admisible</th>
+          <th>ΔU Máxima en 220 V</th>
+          <th>ΔU Máxima en 380 V</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Línea Principal</strong> (Medidor a Tablero Principal)</td>
+          <td><strong>1.0%</strong></td>
+          <td>2.20 V</td>
+          <td>3.80 V</td>
+        </tr>
+        <tr>
+          <td><strong>Circuitos de Iluminación</strong></td>
+          <td><strong>3.0%</strong></td>
+          <td>6.60 V</td>
+          <td>11.40 V</td>
+        </tr>
+        <tr>
+          <td><strong>Fuerza Motriz / Tomas de Uso General</strong></td>
+          <td><strong>5.0%</strong></td>
+          <td>11.00 V</td>
+          <td>19.00 V</td>
+        </tr>
+        <tr>
+          <td><strong>Arranque de Motores (Transitorio)</strong></td>
+          <td><strong>10% a 15%</strong></td>
+          <td>22.0 - 33.0 V</td>
+          <td>38.0 - 57.0 V</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="page-break"></div>
+
+    <!-- 5. Tabla de Corrientes Admisibles -->
+    <h2>5. Tabla de Conductores de Cobre IRAM NM 247-3 / IRAM 2178</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Sección ($S$)</th>
+          <th>$I_z$ Cañería Monof.</th>
+          <th>$I_z$ Cañería Trif.</th>
+          <th>$I_z$ Subterráneo</th>
+          <th>$R$ a 20°C</th>
+          <th>$R$ a 70°C</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1.5 mm²</strong></td>
+          <td>15 A</td>
+          <td>13.5 A</td>
+          <td>—</td>
+          <td>12.1 Ω/km</td>
+          <td>14.5 Ω/km</td>
+        </tr>
+        <tr>
+          <td><strong>2.5 mm²</strong></td>
+          <td>21 A</td>
+          <td>18.5 A</td>
+          <td>36 A</td>
+          <td>7.41 Ω/km</td>
+          <td>8.86 Ω/km</td>
+        </tr>
+        <tr>
+          <td><strong>4.0 mm²</strong></td>
+          <td>28 A</td>
+          <td>25.0 A</td>
+          <td>47 A</td>
+          <td>4.61 Ω/km</td>
+          <td>5.51 Ω/km</td>
+        </tr>
+        <tr>
+          <td><strong>6.0 mm²</strong></td>
+          <td>36 A</td>
+          <td>32.0 A</td>
+          <td>59 A</td>
+          <td>3.08 Ω/km</td>
+          <td>3.68 Ω/km</td>
+        </tr>
+        <tr>
+          <td><strong>10.0 mm²</strong></td>
+          <td>50 A</td>
+          <td>44.0 A</td>
+          <td>79 A</td>
+          <td>1.83 Ω/km</td>
+          <td>2.19 Ω/km</td>
+        </tr>
+        <tr>
+          <td><strong>16.0 mm²</strong></td>
+          <td>66 A</td>
+          <td>58.0 A</td>
+          <td>102 A</td>
+          <td>1.15 Ω/km</td>
+          <td>1.37 Ω/km</td>
+        </tr>
+        <tr>
+          <td><strong>25.0 mm²</strong></td>
+          <td>88 A</td>
+          <td>77.0 A</td>
+          <td>133 A</td>
+          <td>0.727 Ω/km</td>
+          <td>0.869 Ω/km</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 6. Ejemplos Resueltos Modelo -->
+    <h2>6. Ejemplo Resuelto Modelo</h2>
+    <div class="problem-box">
+      <div class="problem-title">Caso Práctico: Alimentación a Torno Monofásico</div>
+      <p>
+        Un torno monofásico de $2.5\text{ kW}$ ($220\text{ V}$, $\cos\varphi = 0.85$) está a $40\text{ metros}$ del
+        tablero seccional en cañería de PVC embutida ($\rho = 0.021$). Límite para fuerza motriz: $5\%$.
+      </p>
+      <div
+        style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; background: #f8fafc; padding: 0.75rem; border-radius: 4px; margin-top: 0.5rem;">
+        1) Corriente: I_b = 2500 / (220 · 0.85) = 13.37 A<br>
+        2) Caída Admisible: ΔU_adm = 220 · 0.05 = 11.00 V<br>
+        3) Sección Teórica: S_mín = (2 · 0.021 · 40 · 13.37) / 11 = 2.04 mm²<br>
+        4) Elección Comercial: 2.04 mm² > 1.5 mm² ➜ Se adopta <strong>2.5 mm²</strong>.<br>
+        5) Verificación Real: ΔU = (2 · 0.021 · 40 · 13.37) / 2.5 = 8.98 V (ΔU% = 4.08% ≤ 5% ✓ CUMPLE).<br>
+        6) Verificación Térmica: I_z (21 A) ≥ I_n (16 A) ≥ I_b (13.37 A) ✓ CUMPLE.
+      </div>
+    </div>
+
+    <!-- 7. Ejercicios Prácticos de Taller -->
+    <h2>7. Guía de Ejercitación Práctica para el Alumno</h2>
+
+    <div class="problem-box">
+      <div class="problem-title">Problema 1: Iluminación de Aulas (Monofásico)</div>
+      <p>
+        Una línea de iluminación transporta una corriente de $8\text{ A}$ a $220\text{ V}$ a una distancia de $32\text{
+        metros}$. El cable propuesto es de cobre de $1.5\text{ mm}^2$ ($\rho = 0.021$).
+        <br>a) Calcule la caída en Volts y porcentual.
+        <br>b) ¿Cumple con el límite del $3\%$ de la reglamentación AEA? Si no cumple, ¿qué sección debe instalar?
+      </p>
+      <div class="work-space">Espacio para resolución, fórmulas y cálculos del alumno...</div>
+    </div>
+
+    <div class="problem-box">
+      <div class="problem-title">Problema 2: Electrobomba Centrífuga (Trifásica)</div>
+      <p>
+        Se instala una bomba trifásica de $7.5\text{ kW}$ ($380\text{ V}$, $\cos\varphi = 0.82$, rendimiento $\eta =
+        0.88$) a una distancia de $110\text{ metros}$ en tendido subterráneo ($\rho = 0.021$). Límite: $5\%$.
+        <br>a) Calcule la corriente nominal $I_b$.
+        <br>b) Determine la sección mínima del conductor y seleccione el valor comercial correspondiente.
+      </p>
+      <div class="work-space">Espacio para resolución, fórmulas y cálculos del alumno...</div>
+    </div>
+
+    <div class="problem-box">
+      <div class="problem-title">Problema 3: Línea Seccional de Taller (Trifásica)</div>
+      <p>
+        Desde el Tablero General al Tablero Seccional de Electromecánica hay $70\text{ metros}$. Potencia trifásica
+        estimada: $20\text{ kW}$ ($380\text{ V}$, $\cos\varphi = 0.85$). El reglamento exige que la caída en esta línea
+        no supere el $1.5\%$.
+        <br>Determine la sección comercial del cable subterráneo IRAM 2178 de cobre necesaria.
+      </p>
+      <div class="work-space">Espacio para resolución, fórmulas y cálculos del alumno...</div>
+    </div>
+
+    <!-- 8. Tabla de Calificación Final -->
+    <h2 style="margin-top: 2rem;">8. Rúbrica y Calificación del Docente</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Criterio Evaluado</th>
+          <th>Puntaje Asignado</th>
+          <th>Puntaje Obtenido</th>
+          <th>Firma del Profesor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Uso de fórmulas exactas y unidades técnicas correctas</td>
+          <td>30 puntos</td>
+          <td>______</td>
+          <td rowspan="4" style="vertical-align: middle; text-align: center;">
+            <br><br>.......................................................<br>
+            Firma y Sello Docente
+          </td>
+        </tr>
+        <tr>
+          <td>Aplicación de resistividad correcta a 70°C ($\rho = 0.021$)</td>
+          <td>20 puntos</td>
+          <td>______</td>
+        </tr>
+        <tr>
+          <td>Verificación del límite normativo AEA (3% o 5%)</td>
+          <td>25 puntos</td>
+          <td>______</td>
+        </tr>
+        <tr>
+          <td>Selección de la sección comercial y chequeo de $I_z$</td>
+          <td>25 puntos</td>
+          <td>______</td>
+        </tr>
+        <tr>
+          <td><strong>CALIFICACIÓN FINAL</strong></td>
+          <td><strong>100 PUNTOS</strong></td>
+          <td><strong>______</strong></td>
+          <td>Fecha: ...... / ...... / 202...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          console.log('ServiceWorker registration successful with scope: ', reg.scope);
+        }).catch(err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
+</body>
+
+</html>

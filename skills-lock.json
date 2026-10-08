@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "energykit": {
+      "source": "dpearson2699/swift-ios-skills",
+      "sourceType": "github",
+      "skillPath": "skills/energykit/SKILL.md",
+      "computedHash": "e44aaca8f4dc33e66540f80deb770089b200dcd668cf85b7a41fdd58975c4c10"
+    }
+  }
+}

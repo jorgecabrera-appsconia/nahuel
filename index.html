@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo de Caída de Tensión | Portal Didáctico para Escuelas Técnicas</title>
+  <meta name="description" content="Portal educativo técnico para el cálculo y dimensionamiento de conductores eléctricos por caída de tensión según normas AEA 90364 e IEC. Incluye simulador, diapositivas y cuadernillo.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#060913">
+  <link rel="apple-touch-icon" href="images/icon.png">
+</head>
+<body>
+
+  <!-- ========================================================================
+       MODAL DE AUTENTICACIÓN (SUPABASE)
+       ======================================================================== -->
+  <div id="auth-overlay" class="auth-overlay">
+    <div class="auth-modal">
+      <div class="auth-header" style="margin-bottom: 1.5rem;">
+        <div class="brand-icon">⚡</div>
+        <h2>Acceso al Portal</h2>
+        <p>Identifícate para continuar al simulador</p>
+      </div>
+      
+      <!-- Selector de Modo (Login/Registro) -->
+      <div class="segmented-control" style="margin-bottom: 1.5rem;">
+        <button type="button" class="segmented-btn active" id="btn-tab-login">Iniciar Sesión</button>
+        <button type="button" class="segmented-btn" id="btn-tab-register">Registrarse</button>
+      </div>
+
+      <div id="auth-error" class="auth-error" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem; margin-bottom: 1rem;"></div>
+
+      <!-- Formulario Login -->
+      <form id="login-form" class="auth-form">
+        <div class="form-group">
+          <label for="login-email" class="form-label">Correo Electrónico</label>
+          <input type="email" id="login-email" class="input-control" required placeholder="alumno@escuela.edu.ar">
+        </div>
+        <div class="form-group">
+          <label for="login-password" class="form-label">Contraseña</label>
+          <input type="password" id="login-password" class="input-control" required placeholder="Mínimo 6 caracteres">
+        </div>
+        <button type="submit" id="btn-submit-login" class="btn-check-quiz" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Iniciar Sesión</button>
+      </form>
+
+      <!-- Formulario Registro -->
+      <form id="register-form" class="auth-form" style="display: none;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="reg-nombre" class="form-label">Nombre</label>
+            <input type="text" id="reg-nombre" class="input-control" required placeholder="Ej. Juan">
+          </div>
+          <div class="form-group">
+            <label for="reg-apellido" class="form-label">Apellido</label>
+            <input type="text" id="reg-apellido" class="input-control" required placeholder="Ej. Pérez">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-escuela" class="form-label">Escuela Técnica</label>
+          <input type="text" id="reg-escuela" class="input-control" required placeholder="Ej. E.E.S.T N°1">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="reg-curso" class="form-label">Curso (Año)</label>
+            <input type="text" id="reg-curso" class="input-control" required placeholder="Ej. 5to">
+          </div>
+          <div class="form-group">
+            <label for="reg-division" class="form-label">División</label>
+            <input type="text" id="reg-division" class="input-control" required placeholder="Ej. 2da">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="reg-email" class="form-label">Correo Electrónico</label>
+          <input type="email" id="reg-email" class="input-control" required placeholder="alumno@escuela.edu.ar">
+        </div>
+        <div class="form-group">
+          <label for="reg-password" class="form-label">Contraseña</label>
+          <input type="password" id="reg-password" class="input-control" required minlength="6" placeholder="Mínimo 6 caracteres">
+        </div>
+        <button type="submit" id="btn-submit-register" class="btn-slide-nav" style="width: 100%; justify-content: center; margin-top: 0.5rem;">Crear Cuenta Estudiantil</button>
+      </form>
+      
+      <!-- PWA Install Button -->
+      <div id="pwa-install-container" style="display: none; margin-top: 1.5rem; text-align: center; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">¿Quieres usar el simulador sin conexión?</p>
+        <button type="button" id="btn-install-pwa" class="btn-check-quiz" style="width: 100%; justify-content: center; background-color: #0ea5e9; color: white;">
+          <span style="margin-right: 0.5rem;">📱</span> Instalar App
+        </button>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Contenedor Principal (oculto hasta autenticarse) -->
+  <div id="app-container" style="display: none;">
+
+  <!-- ========================================================================
+       BARRA DE NAVEGACIÓN SUPERIOR / HEADER
+       ======================================================================== -->
+  <header class="header-portal">
+    <div class="header-container">
+      <a href="#" class="brand-wrapper" id="brand-home-link">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <span>Educación Técnico Profesional</span>
+          <h1>ELECTRO-TÉCNICA // Caída de Tensión</h1>
+        </div>
+      </a>
+
+      <!-- Pestañas de Navegación -->
+      <nav class="nav-tabs" role="tablist">
+        <button class="tab-btn active" data-tab="calc-tab" id="tab-btn-calc" role="tab" aria-selected="true">
+          <span>⚡</span> Simulador & Calculadora
+        </button>
+        <button class="tab-btn" data-tab="slides-tab" id="tab-btn-slides" role="tab" aria-selected="false">
+          <span>📽️</span> Diapositivas de Clase
+        </button>
+        <button class="tab-btn" data-tab="booklet-tab" id="tab-btn-booklet" role="tab" aria-selected="false">
+          <span>📘</span> Cuadernillo del Estudiante
+        </button>
+        <button class="tab-btn" data-tab="lab-tab" id="tab-btn-lab" role="tab" aria-selected="false">
+          <span>📝</span> Desafíos & Quiz
+        </button>
+        <button class="tab-btn" data-tab="norm-tab" id="tab-btn-norm" role="tab" aria-selected="false">
+          <span>📐</span> Normativa AEA 90364
+        </button>
+      </nav>
+
+      <!-- Acciones de Cabecera -->
+      <div class="header-actions">
+        <button class="btn-icon" id="theme-toggle" title="Cambiar tema Claro/Oscuro" aria-label="Cambiar tema">
+          <span id="theme-icon">☀️</span>
+        </button>
+        <button class="btn-print-doc" id="btn-print-booklet" title="Imprimir cuadernillo del estudiante en formato A4">
+          <span>🖨️</span> Imprimir PDF
+        </button>
+        <button class="btn-icon" id="btn-logout" title="Cerrar sesión" aria-label="Cerrar sesión" style="display: inline-flex;">
+          <span title="Cerrar Sesión">🚪</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       CONTENIDO PRINCIPAL
+       ======================================================================== -->
+  <main class="main-wrapper">
+
+    <!-- ======================================================================
+         PESTAÑA 1: CALCULADORA Y SIMULADOR TÉCNICO INTERACTIVO
+         ====================================================================== -->
+    <section class="tab-panel active" id="calc-tab" role="tabpanel">
+      <div class="module-hero">
+        <span class="hero-tag">Laboratorio Virtual de Cálculo</span>
+        <h2 class="hero-title">Simulador Dinámico de Caída de Tensión</h2>
+        <p class="hero-subtitle">
+          Herramienta interactiva para dimensionamiento de conductores y verificación de líneas según la reglamentación <strong>AEA 90364</strong>. Compruebe la caída en tiempo real y determine la sección comercial reglamentaria.
+        </p>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Panel Izquierdo: Parámetros del Circuito -->
+        <div class="panel-card">
+          <h3 class="card-title">
+            <span>⚙️</span> Parámetros de la Instalación
+          </h3>
+
+          <!-- Tipo de Sistema -->
+          <div class="form-group">
+            <label class="form-label">
+              Sistema Eléctrico
+              <span class="label-hint">Tensión de suministro</span>
+            </label>
+            <div class="segmented-control">
+              <button type="button" class="segmented-btn active" data-system="monofasico" id="btn-sys-mono">
+                Monofásico (220 V)
+              </button>
+              <button type="button" class="segmented-btn" data-system="trifasico" id="btn-sys-tri">
+                Trifásico (380 V)
+              </button>
+            </div>
+          </div>
+
+          <!-- Tensión Nominal Manual -->
+          <div class="form-group">
+            <label class="form-label" for="calc-voltage">
+              Tensión Nominal de Línea ($U_n$)
+              <span class="label-hint">Voltios</span>
+            </label>
+            <input type="number" id="calc-voltage" class="input-control" value="220" min="110" max="1000">
+          </div>
+
+          <!-- Modo de Carga (Corriente vs Potencia) -->
+          <div class="form-group">
+            <label class="form-label">
+              Definición de la Carga
+              <span class="label-hint">¿Cómo conoce el consumo?</span>
+            </label>
+            <div class="segmented-control" style="margin-bottom: 0.75rem;">
+              <button type="button" class="segmented-btn active" data-loadmode="current" id="btn-mode-current">
+                Por Corriente ($I$)
+              </button>
+              <button type="button" class="segmented-btn" data-loadmode="power" id="btn-mode-power">
+                Por Potencia ($P$)
+              </button>
+            </div>
+
+            <!-- Entrada Corriente -->
+            <div id="group-current">
+              <input type="number" id="calc-current" class="input-control" value="12.5" step="0.1" min="0.1" placeholder="Ej: 12.5 A">
+            </div>
+
+            <!-- Entrada Potencia -->
+            <div id="group-power" style="display: none;">
+              <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 0.5rem;">
+                <input type="number" id="calc-power" class="input-control" value="2500" step="50" min="1" placeholder="Valor de potencia">
+                <select id="calc-power-unit" class="select-control">
+                  <option value="w">Watts (W)</option>
+                  <option value="kw">Kilowatts (kW)</option>
+                  <option value="hp">Caballos (HP)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Factor de Potencia (cos phi) -->
+          <div class="form-group">
+            <label class="form-label" for="calc-cosphi">
+              Factor de Potencia ($\cos\varphi$)
+              <span class="label-hint">0.1 a 1.0 (Motores ~0.8 a 0.85)</span>
+            </label>
+            <input type="number" id="calc-cosphi" class="input-control" value="0.90" step="0.01" min="0.1" max="1.0">
+          </div>
+
+          <!-- Longitud de la Línea -->
+          <div class="form-group">
+            <label class="form-label" for="calc-length">
+              Longitud de la Línea ($L$)
+              <span class="label-hint">Distancia física tablero-carga</span>
+            </label>
+            <div class="range-wrap">
+              <input type="range" id="calc-length" class="range-slider" min="5" max="250" value="45" step="1">
+              <span class="range-value" id="length-val-display">45 m</span>
+            </div>
+          </div>
+
+          <!-- Material Conductor y Temperatura -->
+          <div class="form-group">
+            <label class="form-label" for="calc-material">
+              Material del Conductor y Régimen Térmico
+              <span class="label-hint">Resistividad $\rho$</span>
+            </label>
+            <select id="calc-material" class="select-control">
+              <option value="0.021" selected>Cobre a 70°C (Servicio Continuo PVC - Reglamentario AEA)</option>
+              <option value="0.0178">Cobre a 20°C (Medición en Frío / Laboratorio)</option>
+              <option value="0.023">Cobre a 90°C (Aislación Termoestable XLPE)</option>
+              <option value="0.034">Aluminio a 70°C (Preensamblado / Distribución)</option>
+            </select>
+          </div>
+
+          <!-- Tipo de Circuito / Límite AEA -->
+          <div class="form-group">
+            <label class="form-label" for="calc-circuit-use">
+              Destino del Circuito (Límite Admisible AEA 90364)
+            </label>
+            <select id="calc-circuit-use" class="select-control">
+              <option value="3.0" selected>Iluminación Terminal (Máximo 3.0%)</option>
+              <option value="5.0">Fuerza Motriz / Tomas de Uso General (Máximo 5.0%)</option>
+              <option value="1.0">Línea Principal - Medidor a Tablero Principal (Máximo 1.0%)</option>
+              <option value="1.5">Línea Seccional - Tablero Principal a Seccional (Máximo 1.5%)</option>
+            </select>
+          </div>
+
+          <!-- Sección del Conductor -->
+          <div class="form-group">
+            <label class="form-label" for="calc-section">
+              Sección Comercial del Conductor ($S$)
+              <span class="label-hint">mm² normalizados IRAM</span>
+            </label>
+            <select id="calc-section" class="select-control" style="font-weight: 700; color: var(--accent-cyan);">
+              <option value="1.5">1.5 mm² (Corriente adm. ~15 A)</option>
+              <option value="2.5" selected>2.5 mm² (Corriente adm. ~21 A)</option>
+              <option value="4">4.0 mm² (Corriente adm. ~28 A)</option>
+              <option value="6">6.0 mm² (Corriente adm. ~36 A)</option>
+              <option value="10">10.0 mm² (Corriente adm. ~50 A)</option>
+              <option value="16">16.0 mm² (Corriente adm. ~66 A)</option>
+              <option value="25">25.0 mm² (Corriente adm. ~88 A)</option>
+              <option value="35">35.0 mm² (Corriente adm. ~109 A)</option>
+              <option value="50">50.0 mm² (Corriente adm. ~131 A)</option>
+              <option value="70">70.0 mm² (Corriente adm. ~166 A)</option>
+              <option value="95">95.0 mm² (Corriente adm. ~202 A)</option>
+              <option value="120">120.0 mm² (Corriente adm. ~232 A)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Panel Derecho: Resultados, Medidor Semafórico y Diagnóstico -->
+        <div class="panel-card">
+          <h3 class="card-title">
+            <span>📊</span> Diagnóstico y Resultados Técnicos
+          </h3>
+
+          <!-- Banner Semafórico de Estado -->
+          <div class="result-status-banner pass" id="result-status-banner">
+            <div class="status-icon-box">
+              <span id="status-icon-char">✓</span>
+            </div>
+            <div class="status-content">
+              <h4 id="status-title">INSTALACIÓN REGLAMENTARIA (CUMPLE)</h4>
+              <p id="status-desc">La caída calculada se encuentra dentro de las prescripciones de la norma AEA 90364.</p>
+            </div>
+          </div>
+
+          <!-- Métricas Principales -->
+          <div class="metric-row">
+            <div class="metric-box">
+              <div class="metric-title">Caída de Tensión (ΔU)</div>
+              <div class="metric-value" id="res-delta-u">3.98 <span class="metric-unit">V</span></div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Caída Porcentual (ΔU%)</div>
+              <div class="metric-value" id="res-delta-pct">1.81%</div>
+            </div>
+          </div>
+
+          <div class="metric-row">
+            <div class="metric-box">
+              <div class="metric-title">Tensión en Bornes Carga</div>
+              <div class="metric-value" id="res-u-final">216.0 <span class="metric-unit">V</span></div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Corriente del Circuito ($I$)</div>
+              <div class="metric-value" id="res-current-calc">12.50 <span class="metric-unit">A</span></div>
+            </div>
+          </div>
+
+          <!-- Sección Recomendada y Capacidad Térmica -->
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; margin-bottom: 1.25rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Sección mínima requerida por ΔU:</span>
+              <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.2rem; color: var(--accent-cyan);" id="res-s-recom">2.5 mm²</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Corriente admisible del cable ($I_z$):</span>
+              <span style="font-family: var(--font-mono); font-weight: 800; font-size: 1.1rem; color: var(--accent-emerald);" id="res-iz-val">21 A</span>
+            </div>
+          </div>
+
+          <!-- Tacómetro / Barra Visualizadora del Límite de Tensión -->
+          <div class="wire-visualizer">
+            <div class="wire-header">
+              <span>Nivel de Caída de Tensión relativo al límite</span>
+              <span>0% ──────── Límite ──────── 150%</span>
+            </div>
+            <div class="wire-bar-container">
+              <div class="wire-progress" id="wire-progress" style="width: 50%; background-color: var(--accent-emerald);"></div>
+            </div>
+            <div class="wire-limits">
+              <span>0% (Ideal)</span>
+              <span>Límite Admisible</span>
+              <span>Zona Crítica (+5%)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 2: DIAPOSITIVAS DE CLASE (DECK INTERACTIVO)
+         ====================================================================== -->
+    <section class="tab-panel" id="slides-tab" role="tabpanel">
+      <div class="module-hero">
+        <span class="hero-tag">Recurso para Exposición Áulica</span>
+        <h2 class="hero-title">Presentación Didáctica: Caída de Tensión</h2>
+        <p class="hero-subtitle">
+          Diapositivas listas para proyectar en el aula o aula taller. Incluye notas pedagógicas para el profesor y soporte para teclado (flechas ⬅️ y ➡️).
+        </p>
+      </div>
+
+      <div class="slide-player-container" id="slide-player">
+        <!-- Lienzo de la Diapositiva -->
+        <div class="slide-canvas">
+          <div class="slide-content-block">
+            <span class="slide-badge" id="slide-badge">Diapositiva 01 / 10 • Introducción al Problema</span>
+            <h3 class="slide-heading" id="slide-heading">Cargando diapositiva...</h3>
+            <div class="slide-body" id="slide-body">
+              Contenido interactivo de la clase...
+            </div>
+          </div>
+        </div>
+
+        <!-- Barra Inferior de Control de la Diapositiva -->
+        <div class="slide-controls-bar">
+          <div class="slide-counter" id="slide-counter-display">
+            1 / 10
+          </div>
+
+          <div class="slide-btn-group">
+            <button class="btn-slide-nav" id="slide-btn-prev">
+              <span>⬅️</span> Anterior
+            </button>
+            <button class="btn-slide-nav" id="slide-btn-next">
+              Siguiente <span>➡️</span>
+            </button>
+            <button class="btn-slide-nav" id="slide-btn-notes" title="Ver sugerencias pedagógicas para la clase">
+              <span>💡</span> Notas Docente
+            </button>
+            <button class="btn-slide-nav" id="slide-btn-fs" title="Modo Pantalla Completa para Proyector">
+              <span>⛶</span> Pantalla Completa
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cuadro Desplegable de Notas Pedagógicas -->
+      <div class="teacher-notes-box" id="slide-notes-container" style="display: none;">
+        <h5>💡 Sugerencia Didáctica para el Docente</h5>
+        <p id="slide-notes-text">Notas para el docente...</p>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 3: CUADERNILLO TÉCNICO DEL ESTUDIANTE
+         ====================================================================== -->
+    <section class="tab-panel" id="booklet-tab" role="tabpanel">
+      <div class="booklet-container">
+        <!-- Navegación Rápida del Cuadernillo -->
+        <aside class="booklet-nav-card">
+          <h4 class="booklet-toc-title">Índice Temático</h4>
+          <ul class="toc-list">
+            <li><a href="#doc-intro" class="toc-link">1. Fundamento Físico</a></li>
+            <li><a href="#doc-pouillet" class="toc-link">2. Resistencia y Temperatura</a></li>
+            <li><a href="#doc-formulas-mono" class="toc-link">3. Fórmulas Monofásicas</a></li>
+            <li><a href="#doc-formulas-tri" class="toc-link">4. Fórmulas Trifásicas</a></li>
+            <li><a href="#doc-aea-table" class="toc-link">5. Límites AEA 90364</a></li>
+            <li><a href="#doc-solved-problems" class="toc-link">6. Ejercicios Resueltos</a></li>
+            <li><a href="#doc-student-tasks" class="toc-link">7. Ejercicios de Taller</a></li>
+            <li><a href="#doc-self-eval" class="toc-link">8. Hoja de Calificación</a></li>
+          </ul>
+        </aside>
+
+        <!-- Documento Imprimible del Cuadernillo -->
+        <article class="booklet-article" id="booklet-print-area">
+          <!-- Botón de Acción Superior -->
+          <div style="display: flex; justify-content: flex-end; margin-bottom: 1.5rem;">
+            <button class="btn-print-doc" onclick="window.print()">
+              <span>🖨️</span> Imprimir Cuadernillo Completo en A4 / Guardar PDF
+            </button>
+          </div>
+
+          <!-- ====================================================================
+               CARÁTULA PRINCIPAL TÉCNICA (PÁGINA 1)
+               ==================================================================== -->
+          <div class="cover-sheet">
+            <div>
+              <!-- Encabezado Institucional Oficial -->
+              <div class="cover-inst-header">
+                <p class="cover-inst-sup">Dirección de Educación Técnico Profesional • Modalidad ETP</p>
+                <h2 class="cover-school-name">Escuela de Educación Secundaria Técnica</h2>
+                <p class="cover-school-sub">Especialidad: Electromecánica // Electricidad // Energías Renovables</p>
+              </div>
+
+              <!-- Títulos del Cuadernillo -->
+              <div class="cover-main-titles">
+                <span class="cover-badge-doc">Cuadernillo Didáctico de Estudio y Taller</span>
+                <h1 class="cover-subject-title">Dimensionamiento y Caída de Tensión</h1>
+                <p class="cover-subject-subtitle">
+                  Criterios de Cálculo Analítico, Regla de Selección Dual y Verificación Reglamentaria según <strong>AEA 90364</strong> e <strong>IRAM NM 247-3 / 2178</strong>
+                </p>
+              </div>
+
+              <!-- Imagen del Transformador Eléctrico -->
+              <div class="cover-transformer-wrap">
+                <img src="images/transformador.jpg" alt="Transformador Eléctrico de Potencia y Distribución" class="cover-transformer-img">
+                <div class="cover-transformer-caption">
+                  <strong>Transformador de Distribución Eléctrica MT / BT (13.2 kV a 380/220 V)</strong>
+                  <span>
+                    Subestación transformadora: Origen físico de las tensiones de fase y línea de la red. Desde este punto se transporta la energía hacia los tableros generales, sufriendo caídas de tensión por la impedancia de los conductores hasta los bornes de las cargas.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <!-- Rótulo Técnico Normalizado IRAM del Alumno y Docente -->
+              <table class="cover-rotulo-table">
+                <tr>
+                  <td style="width: 60%;">
+                    <span class="cover-rotulo-label">Espacio Curricular</span>
+                    <span class="cover-rotulo-val">Instalaciones Eléctricas / Electrotecnia Aplicada</span>
+                  </td>
+                  <td style="width: 40%;">
+                    <span class="cover-rotulo-label">Curso y División</span>
+                    <span class="cover-rotulo-val">...... Año &nbsp; Div: ............</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="cover-rotulo-label">Estudiante</span>
+                    <span class="cover-rotulo-val">.......................................................................................</span>
+                  </td>
+                  <td>
+                    <span class="cover-rotulo-label">Ciclo Lectivo</span>
+                    <span class="cover-rotulo-val">202...</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <span class="cover-rotulo-label">Docente a Cargo</span>
+                    <span class="cover-rotulo-val">.......................................................................................</span>
+                  </td>
+                  <td>
+                    <span class="cover-rotulo-label">Calificación / Dictamen</span>
+                    <span class="cover-rotulo-val">....................................</span>
+                  </td>
+                </tr>
+              </table>
+
+              <div class="cover-footer-note" style="margin-top: 0.85rem; font-size: 0.78rem; text-align: center; color: var(--text-dim);">
+                Documento técnico desarrollado conforme a la Reglamentación para la Ejecución de Instalaciones Eléctricas en Inmuebles (AEA 90364).
+              </div>
+            </div>
+          </div>
+
+          <!-- Encabezado Institucional del Cuadernillo Interior -->
+          <div class="booklet-header-box">
+            <div class="school-meta">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-cyan); text-transform: uppercase;">
+                Educación Secundaria Técnica • Ciclo Superior
+              </span>
+              <h2>Unidad Temática: Cálculo de Caída de Tensión</h2>
+              <p>Espacio Curricular: <strong>Instalaciones Eléctricas / Electrotecnia</strong></p>
+            </div>
+          </div>
+
+          <!-- Sección 1: Fundamento -->
+          <section id="doc-intro" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">1. Origen Físico y Consecuencias Técnicas</h3>
+            <p>
+              En toda instalación eléctrica diseñada bajo la reglamentación <strong>AEA 90364</strong> (Asociación Electrotécnica Argentina), los conductores reales presentan resistencia óhmica. Al circular una corriente de carga $I$, se produce inevitablemente una pérdida de potencial entre el tablero de origen y los bornes de la máquina o luminaria.
+            </p>
+            <p style="margin-top: 0.5rem;">
+              <strong>¿Por qué es peligroso un exceso de caída de tensión?</strong>
+            </p>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+              <li><strong>Pérdida de cupla en motores:</strong> El torque de arranque disminuye con el cuadrado de la tensión ($C \propto U^2$). Una caída del 10% reduce la cupla en un 20%, pudiendo trabar la máquina e incendiar el bobinado.</li>
+              <li><strong>Caída del flujo lumínico:</strong> Provoca parpadeos intolerables (*flicker*) y reduce la vida útil de los balastos y drivers electrónicos.</li>
+              <li><strong>Disparo y vibración de contactores:</strong> Las bobinas de mando se abren intempestivamente si $U < 0.85 \cdot U_n$.</li>
+              <li><strong>Desperdicio energético:</strong> El cable disipa calor inútilmente por efecto Joule ($P = I^2 \cdot R$), encareciendo la factura eléctrica.</li>
+            </ul>
+          </section>
+
+          <!-- Sección 2: Ley de Pouillet y Temperatura -->
+          <section id="doc-pouillet" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">2. Ley de Pouillet y el Efecto de la Temperatura</h3>
+            <p>
+              La resistencia $R$ de un conductor homogéneo responde a la Ley de Pouillet:
+            </p>
+            <div class="formula-card">
+              <div class="formula-equation">R = ρ · ( L / S ) &nbsp; [Ω]</div>
+              <div class="formula-desc">Donde ρ es la resistividad en Ω·mm²/m, L es la longitud en metros y S la sección transversal en mm².</div>
+            </div>
+
+            <p style="margin-top: 1rem;">
+              <strong>Variación Térmica de la Resistividad:</strong> La resistividad eléctrica aumenta linealmente con la temperatura según $\rho_T = \rho_{20} \cdot [1 + \alpha_{20} \cdot (T - 20^\circ\text{C})]$.
+            </p>
+            <ul style="margin: 0.5rem 0 1rem 1.5rem;">
+              <li><strong>Cobre a 20°C:</strong> $\rho_{20} = 0.0178 \ \Omega\cdot\text{mm}^2/\text{m}$ (valor sólo para ensayos de laboratorio en frío).</li>
+              <li><strong>Cobre a 70°C (Servicio Continuo con aislación PVC):</strong> $\rho_{70} \approx \mathbf{0.021} \ \mathbf{\Omega\cdot mm^2/m}$. <em>(Este es el valor obligatorio para dimensionar según AEA 90364).</em></li>
+              <li><strong>Cobre a 90°C (Aislación XLPE/EPR):</strong> $\rho_{90} \approx \mathbf{0.023} \ \mathbf{\Omega\cdot mm^2/m}$.</li>
+              <li><strong>Aluminio a 70°C:</strong> $\rho_{70} \approx \mathbf{0.034} \ \mathbf{\Omega\cdot mm^2/m}$.</li>
+            </ul>
+          </section>
+
+          <!-- Sección 3: Fórmulas Monofásicas -->
+          <section id="doc-formulas-mono" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">3. Fórmulas de Cálculo para Circuitos Monofásicos (220 V)</h3>
+            <p>En circuitos monofásicos a dos hilos (Fase y Neutro), la corriente recorre el conductor de ida y el de retorno, por lo que la distancia total es $2 \cdot L$:</p>
+
+            <div class="formula-card">
+              <div class="formula-equation">ΔU = ( 2 · ρ · L · I ) / S &nbsp; [Volts]</div>
+              <div class="formula-desc">Caída de tensión absoluta en función de la corriente de línea I.</div>
+            </div>
+
+            <div class="formula-card">
+              <div class="formula-equation">ΔU% = ( ΔU / 220 ) · 100% = ( 2 · ρ · L · I · 100 ) / ( 220 · S )</div>
+              <div class="formula-desc">Caída de tensión porcentual referida a la tensión nominal de 220 V.</div>
+            </div>
+
+            <div class="formula-card">
+              <div class="formula-equation">S_mín ≥ ( 2 · ρ · L · I ) / ΔU_adm &nbsp; [mm²]</div>
+              <div class="formula-desc">Despeje de la sección transversal mínima para no superar la caída admisible en Volts.</div>
+            </div>
+          </section>
+
+          <!-- Sección 4: Fórmulas Trifásicas -->
+          <section id="doc-formulas-tri" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">4. Fórmulas para Circuitos Trifásicos Equilibrados (380 V)</h3>
+            <p>En sistemas trifásicos tetrapolares equilibrados, la suma de corrientes por el neutro es nula ($I_N = 0$). La caída de tensión entre fases resulta:</p>
+
+            <div class="formula-card">
+              <div class="formula-equation">ΔU = ( √3 · ρ · L · I · cosφ ) / S &nbsp; [Volts]</div>
+              <div class="formula-desc">Caída entre conductores de fase (tensión de línea de 380 V). √3 ≈ 1.732.</div>
+            </div>
+
+            <div class="formula-card">
+              <div class="formula-equation">ΔU = ( ρ · L · P ) / ( 380 · S ) &nbsp; [Volts]</div>
+              <div class="formula-desc">Expresión directa en función de la potencia trifásica activa total P (en Watts).</div>
+            </div>
+
+            <div class="formula-card">
+              <div class="formula-equation">S_mín ≥ ( √3 · ρ · L · I · cosφ ) / ΔU_adm = ( 100 · ρ · L · P ) / ( 380² · ΔU%_adm ) &nbsp; [mm²]</div>
+              <div class="formula-desc">Sección teórica mínima en función de la potencia o de la corriente trifásica.</div>
+            </div>
+          </section>
+
+          <!-- Sección 5: Tabla Normativa AEA 90364 -->
+          <section id="doc-aea-table" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">5. Límites Reglamentarios según AEA 90364</h3>
+            <div class="tech-table-wrapper">
+              <table class="tech-table">
+                <thead>
+                  <tr>
+                    <th>Sector / Tipo de Circuito</th>
+                    <th>ΔU% Máx. Admisible</th>
+                    <th>ΔU en 220 V</th>
+                    <th>ΔU en 380 V</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Línea Principal</strong> (Medidor a Tablero Principal)</td>
+                    <td><strong>1.0%</strong></td>
+                    <td>2.20 V</td>
+                    <td>3.80 V</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Circuitos de Iluminación</strong></td>
+                    <td><strong>3.0%</strong></td>
+                    <td>6.60 V</td>
+                    <td>11.40 V</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Fuerza Motriz / Tomas de Uso General</strong></td>
+                    <td><strong>5.0%</strong></td>
+                    <td>11.00 V</td>
+                    <td>19.00 V</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Transitorio de Arranque de Motores</strong></td>
+                    <td><strong>10% a 15%</strong></td>
+                    <td>22.0 - 33.0 V</td>
+                    <td>38.0 - 57.0 V</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div style="background: rgba(16,185,129,0.1); border-left: 4px solid var(--accent-emerald); padding: 1rem; border-radius: 4px; margin-top: 1rem;">
+              <strong>REGLA DE ORO DE DIMENSIONAMIENTO:</strong> La sección comercial elegida debe cumplir simultáneamente:
+              <br>1) <strong>Criterio Térmico:</strong> $I_b \le I_n \le I_z$ (la corriente no debe recalentar el aislante).
+              <br>2) <strong>Criterio de Caída:</strong> $\Delta U\% \le \Delta U\%_{adm}$ (la caída no debe superar el 3% o 5%).
+              <br><strong>Se adopta SIEMPRE la mayor de ambas secciones.</strong>
+            </div>
+          </section>
+
+          <!-- Sección 6: Ejercicios Resueltos Paso a Paso -->
+          <section id="doc-solved-problems" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">6. Ejemplos Prácticos Resueltos</h3>
+
+            <!-- Problema 1 -->
+            <div class="problem-card">
+              <div class="problem-header">
+                <span class="problem-badge">Ejemplo 1</span>
+                <span class="problem-title">Iluminación exterior de cancha deportiva (Monofásica)</span>
+              </div>
+              <p style="margin-bottom: 0.75rem;">
+                Se alimenta una torre de reflectores LED de $1200\text{ W}$, $220\text{ V}$, $\cos\varphi = 0.95$, situada a $50\text{ metros}$ del tablero. Conductor de cobre en cañería ($\rho = 0.021$). Límite de iluminación: $3\%$.
+              </p>
+              <div class="step-box">
+                <div class="step-title">Paso 1: Cálculo de la corriente de proyecto ($I_b$)</div>
+                <p>$$I_b = \frac{1200\text{ W}}{220\text{ V} \cdot 0.95} = \frac{1200}{209} = 5.74\text{ A}$$</p>
+              </div>
+              <div class="step-box">
+                <div class="step-title">Paso 2: Caída de tensión admisible en Volts</div>
+                <p>$$\Delta U_{adm} = 220\text{ V} \cdot 0.03 = 6.60\text{ V}$$</p>
+              </div>
+              <div class="step-box">
+                <div class="step-title">Paso 3: Sección teórica mínima ($S_{mín}$)</div>
+                <p>$$S_{mín} = \frac{2 \cdot 0.021 \cdot 50\text{ m} \cdot 5.74\text{ A}}{6.60\text{ V}} = \frac{12.054}{6.60} = \mathbf{1.82\text{ mm}^2}$$</p>
+              </div>
+              <div class="step-box">
+                <div class="step-title">Paso 4: Adopción comercial y verificación</div>
+                <p>
+                  Como $1.82\text{ mm}^2 > 1.5\text{ mm}^2$, la sección comercial normalizada inmediata superior es **$2.5\text{ mm}^2$**.
+                  <br>Caída real: $\Delta U = \frac{2 \cdot 0.021 \cdot 50 \cdot 5.74}{2.5} = 4.82\text{ V} \implies \Delta U\% = \frac{4.82}{220} \cdot 100\% = \mathbf{2.19\%} \le 3\% \ (\checkmark \text{CUMPLE})$.
+                </p>
+              </div>
+            </div>
+
+            <!-- Problema 2 -->
+            <div class="problem-card">
+              <div class="problem-header">
+                <span class="problem-badge">Ejemplo 2</span>
+                <span class="problem-title">Compresor trifásico del pañol de máquinas (Trifásica)</span>
+              </div>
+              <p style="margin-bottom: 0.75rem;">
+                Compresor de $11\text{ kW}$ ($380\text{ V}$, $\cos\varphi = 0.85$) ubicado a $90\text{ metros}$ del tablero general. Conductor de cobre ($\rho = 0.021$). Límite para fuerza motriz: $5\%$.
+              </p>
+              <div class="step-box">
+                <div class="step-title">Paso 1: Corriente nominal trifásica</div>
+                <p>$$I_b = \frac{11000\text{ W}}{\sqrt{3} \cdot 380\text{ V} \cdot 0.85} = \frac{11000}{559.45} = 19.66\text{ A}$$</p>
+              </div>
+              <div class="step-box">
+                <div class="step-title">Paso 2: Límite de caída admisible</div>
+                <p>$$\Delta U_{adm} = 380\text{ V} \cdot 0.05 = 19.00\text{ V}$$</p>
+              </div>
+              <div class="step-box">
+                <div class="step-title">Paso 3: Sección teórica mínima ($S_{mín}$)</div>
+                <p>$$S_{mín} = \frac{\sqrt{3} \cdot 0.021 \cdot 90\text{ m} \cdot 19.66\text{ A} \cdot 0.85}{19.00\text{ V}} = \frac{54.67}{19.00} = \mathbf{2.87\text{ mm}^2}$$</p>
+              </div>
+              <div class="step-box">
+                <div class="step-title">Paso 4: Adopción y verificación térmica</div>
+                <p>
+                  Como $2.87\text{ mm}^2 > 2.5\text{ mm}^2$, se adopta cable de **$4\text{ mm}^2$**.
+                  <br>Caída real: $\Delta U\% = 3.59\% \le 5\% \ (\checkmark \text{CUMPLE})$.
+                  <br>Verificación térmica: $4\text{ mm}^2$ trifásico en cañería soporta $I_z = 25\text{ A} > 19.66\text{ A}$ (Protección con termomagnética de $20\text{ A}$).
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Sección 7: Ejercicios de Taller para Resolver -->
+          <section id="doc-student-tasks" style="margin-bottom: 2.5rem;">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">7. Guía de Ejercitación para el Estudiante</h3>
+            
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+              <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Ejercicio 1 (Monofásico - Iluminación)</h4>
+              <p>Un circuito de iluminación de aulas transporta $7.5\text{ A}$ a $220\text{ V}$ a lo largo de $38\text{ metros}$ con cable de cobre ($\rho = 0.021$).</p>
+              <p>a) Calcule la caída si se usa cable de $1.5\text{ mm}^2$. ¿Cumple con el límite del $3\%$?</p>
+              <p>b) Si no cumple, indique la sección comercial adecuada y la nueva caída porcentual.</p>
+              <div style="border-bottom: 1px dotted #64748b; height: 35px; margin-top: 0.5rem;">Espacio para cálculos del alumno:</div>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+              <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Ejercicio 2 (Monofásico - Fuerza Motriz)</h4>
+              <p>Una soldadora monofásica consume $18\text{ A}$ a $220\text{ V}$ ($\cos\varphi = 0.80$) a una distancia de $45\text{ metros}$. El límite admisible es del $5\%$.</p>
+              <p>a) Determine la sección teórica mínima.</p>
+              <p>b) Seleccione la sección comercial normalizada y verifique la caída real.</p>
+              <div style="border-bottom: 1px dotted #64748b; height: 35px; margin-top: 0.5rem;">Espacio para cálculos del alumno:</div>
+            </div>
+
+            <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
+              <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Ejercicio 3 (Trifásico - Taller Mecánico)</h4>
+              <p>Desde el Tablero Seccional de Taller hasta un banco de motores se extiende una línea de $80\text{ metros}$ en $380\text{ V}$. Potencia total instalada: $15\text{ kW}$, $\cos\varphi = 0.85$, límite $\Delta U\% \le 5\%$.</p>
+              <p>a) Calcule la corriente de línea $I_b$.</p>
+              <p>b) Determine la sección mínima del cable subterráneo y justifique la elección.</p>
+              <div style="border-bottom: 1px dotted #64748b; height: 35px; margin-top: 0.5rem;">Espacio para cálculos del alumno:</div>
+            </div>
+          </section>
+
+          <!-- Sección 8: Hoja de Registro y Calificación -->
+          <section id="doc-self-eval">
+            <h3 style="font-size: 1.4rem; color: var(--accent-cyan); margin-bottom: 0.75rem;">8. Registro de Calificación Docente</h3>
+            <div class="tech-table-wrapper">
+              <table class="tech-table">
+                <thead>
+                  <tr>
+                    <th>Actividad</th>
+                    <th>Criterio de Evaluación</th>
+                    <th>Puntaje Máx.</th>
+                    <th>Nota Obtenida</th>
+                    <th>Observaciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Ejercicio 1</td>
+                    <td>Identificación de circuito y fórmula monofásica</td>
+                    <td>25 pts</td>
+                    <td>______</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Ejercicio 2</td>
+                    <td>Despeje de sección y límite normativo 5%</td>
+                    <td>25 pts</td>
+                    <td>______</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Ejercicio 3</td>
+                    <td>Cálculo trifásico con raíz de 3 y factor de potencia</td>
+                    <td>30 pts</td>
+                    <td>______</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td>Laboratorio Virtual</td>
+                    <td>Uso y verificación con simulador interactivo</td>
+                    <td>20 pts</td>
+                    <td>______</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2"><strong>CALIFICACIÓN FINAL</strong></td>
+                    <td><strong>100 pts</strong></td>
+                    <td><strong>______</strong></td>
+                    <td>Firma: ................................</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 4: LABORATORIO DE EJERCITACIÓN Y QUIZ INTERACTIVO
+         ====================================================================== -->
+    <section class="tab-panel" id="lab-tab" role="tabpanel">
+      <div class="module-hero">
+        <span class="hero-tag">Taller Práctico de Autoevaluación</span>
+        <h2 class="hero-title">Laboratorio Técnico de Desafíos</h2>
+        <p class="hero-subtitle">
+          Resuelva problemas reales de dimensionamiento, ingrese sus resultados y reciba corrección instantánea paso a paso con puntaje acumulativo.
+        </p>
+      </div>
+
+      <div class="lab-grid">
+        <!-- Tarjeta del Problema Actual -->
+        <div class="quiz-card">
+          <div class="quiz-question-header">
+            <span class="quiz-difficulty facil" id="quiz-diff-badge">Fácil • Monofásica</span>
+            <span style="font-family: var(--font-mono); color: var(--accent-cyan); font-weight: 700;" id="quiz-q-number">
+              Desafío 1 de 4
+            </span>
+          </div>
+
+          <div class="quiz-problem-text" id="quiz-problem-text">
+            Cargando desafío práctico...
+          </div>
+
+          <!-- Entradas del Alumno -->
+          <div class="quiz-input-grid">
+            <div class="form-group">
+              <label class="form-label" for="quiz-input-answer">
+                Tu Respuesta Calculada:
+              </label>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="text" id="quiz-input-answer" class="input-control" placeholder="Ej: 6.37" style="font-family: var(--font-mono); font-size: 1.15rem; font-weight: 700;">
+                <span style="font-family: var(--font-mono); font-weight: 800; color: var(--accent-cyan);" id="quiz-unit-label">V</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; align-items: center;">
+            <button class="btn-check-quiz" id="quiz-btn-check">
+              <span>✓</span> Verificar Cálculo
+            </button>
+            <button class="btn-slide-nav" id="quiz-btn-next" style="display: none; background: var(--accent-blue);">
+              Siguiente Desafío ➜
+            </button>
+          </div>
+
+          <!-- Retroalimentación con Paso a Paso -->
+          <div class="quiz-feedback-box" id="quiz-feedback"></div>
+        </div>
+
+        <!-- Panel Lateral de Progreso del Alumno -->
+        <div class="student-progress-card">
+          <h4 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 1rem; color: var(--accent-cyan);">
+            🏆 Tu Rendimiento
+          </h4>
+          <div style="text-align: center; margin: 1.5rem 0;">
+            <div style="font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700;">
+              Puntaje Acumulado
+            </div>
+            <div style="font-family: var(--font-mono); font-size: 2.5rem; font-weight: 900; color: var(--accent-emerald);" id="quiz-score-val">
+              0 / 100 pts
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.35rem; color: var(--text-muted);">
+              <span>Progreso de desafíos</span>
+              <span id="quiz-progress-text"></span>
+            </div>
+            <div style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 999px; overflow: hidden;">
+              <div id="quiz-progress-bar" style="height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald)); transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+
+          <div style="background: rgba(0,0,0,0.3); border-radius: 8px; padding: 1rem; font-size: 0.85rem; color: var(--text-dim);">
+            <p><strong>Criterio de aprobación:</strong> Se requiere alcanzar al menos 75 puntos para validar la competencia técnica en el simulador.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         PESTAÑA 5: TABLAS NORMATIVAS AEA 90364
+         ====================================================================== -->
+    <section class="tab-panel" id="norm-tab" role="tabpanel">
+      <div class="module-hero">
+        <span class="hero-tag">Normas IRAM y Reglamentación AEA</span>
+        <h2 class="hero-title">Tablas Técnicas de Referencia Rápida</h2>
+        <p class="hero-subtitle">
+          Tablas oficiales de conductores normalizados de cobre (IRAM NM 247-3 e IRAM 2178), resistividades térmicas y checklist de seguridad.
+        </p>
+      </div>
+
+      <div class="panel-card" style="margin-bottom: 2rem;">
+        <h3 class="card-title">
+          <span>📋</span> Corrientes Admisibles de Conductores de Cobre a 70°C (IRAM NM 247-3 / IRAM 2178)
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.25rem;">
+          Valores de corriente máxima admisible ($I_z$) a temperatura ambiente de $40^\circ\text{C}$ para cañerías embutidas en mampostería (Método B1) y tendidos directamente enterrados (IRAM 2178):
+        </p>
+
+        <div class="tech-table-wrapper">
+          <table class="tech-table">
+            <thead>
+              <tr>
+                <th>Sección Nominal ($S$)</th>
+                <th>Monofásico en Cañería (2 cond.)</th>
+                <th>Trifásico en Cañería (3 cond.)</th>
+                <th>Subterráneo Enterrado (IRAM 2178)</th>
+                <th>Resistencia a 20°C ($R_{20}$)</th>
+                <th>Resistencia a 70°C ($R_{70}$)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1.5 mm²</strong></td><td>15 A</td><td>13.5 A</td><td>—</td><td>12.10 Ω/km</td><td>14.47 Ω/km</td></tr>
+              <tr><td><strong>2.5 mm²</strong></td><td>21 A</td><td>18.5 A</td><td>36 A</td><td>7.41 Ω/km</td><td>8.86 Ω/km</td></tr>
+              <tr><td><strong>4 mm²</strong></td><td>28 A</td><td>25 A</td><td>47 A</td><td>4.61 Ω/km</td><td>5.51 Ω/km</td></tr>
+              <tr><td><strong>6 mm²</strong></td><td>36 A</td><td>32 A</td><td>59 A</td><td>3.08 Ω/km</td><td>3.68 Ω/km</td></tr>
+              <tr><td><strong>10 mm²</strong></td><td>50 A</td><td>44 A</td><td>79 A</td><td>1.83 Ω/km</td><td>2.19 Ω/km</td></tr>
+              <tr><td><strong>16 mm²</strong></td><td>66 A</td><td>58 A</td><td>102 A</td><td>1.15 Ω/km</td><td>1.37 Ω/km</td></tr>
+              <tr><td><strong>25 mm²</strong></td><td>88 A</td><td>77 A</td><td>133 A</td><td>0.727 Ω/km</td><td>0.869 Ω/km</td></tr>
+              <tr><td><strong>35 mm²</strong></td><td>109 A</td><td>96 A</td><td>159 A</td><td>0.524 Ω/km</td><td>0.626 Ω/km</td></tr>
+              <tr><td><strong>50 mm²</strong></td><td>131 A</td><td>117 A</td><td>188 A</td><td>0.387 Ω/km</td><td>0.463 Ω/km</td></tr>
+              <tr><td><strong>70 mm²</strong></td><td>166 A</td><td>149 A</td><td>232 A</td><td>0.268 Ω/km</td><td>0.320 Ω/km</td></tr>
+              <tr><td><strong>95 mm²</strong></td><td>202 A</td><td>180 A</td><td>280 A</td><td>0.193 Ω/km</td><td>0.231 Ω/km</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Checklist de Verificación para Alumnos -->
+      <div class="panel-card">
+        <h3 class="card-title">
+          <span>✅</span> Lista de Cotejo para Proyectos de Taller Técnico
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">1. Determinación de Carga</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Calcular la corriente simultánea ($I_b$) considerando factor de simultaneidad y factor de potencia real de los artefactos.
+            </p>
+          </div>
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <h4 style="color: var(--accent-emerald); margin-bottom: 0.5rem;">2. Selección Térmica</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Verificar que la corriente admisible corregida del conductor sea mayor o igual a la corriente nominal de la protección: $I_b \le I_n \le I_z$.
+            </p>
+          </div>
+          <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem;">
+            <h4 style="color: var(--accent-amber); margin-bottom: 0.5rem;">3. Verificación de Caída</h4>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">
+              Comprobar $\Delta U\% \le 3\%$ para iluminación o $\le 5\%$ para fuerza motriz utilizando $\rho = 0.021 \ \Omega\cdot\text{mm}^2/\text{m}$.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       PIE DE PÁGINA / FOOTER
+       ======================================================================== -->
+  <footer class="footer-portal">
+    <p>
+      <strong>ELECTRO-TÉCNICA</strong> • Portal Didáctico para el Ciclo Superior de Educación Secundaria Técnica.
+      <br>
+      Desarrollado bajo normas <strong>AEA 90364</strong> (Asociación Electrotécnica Argentina) e <strong>IRAM / IEC 60364</strong>.
+    </p>
+  </footer>
+
+  </div> <!-- Cierre del contenedor principal -->
+
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then(reg => {
+          console.log('ServiceWorker registration successful with scope: ', reg.scope);
+        }).catch(err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+
+    // PWA Install Logic
+    let deferredPrompt;
+    const installContainer = document.getElementById('pwa-install-container');
+    const installBtn = document.getElementById('btn-install-pwa');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (installContainer) installContainer.style.display = 'block';
+    });
+
+    if (installBtn) {
+      installBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            console.log('PWA installation accepted');
+          }
+          deferredPrompt = null;
+          installContainer.style.display = 'none';
+        }
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      if (installContainer) installContainer.style.display = 'none';
+      deferredPrompt = null;
+      console.log('PWA installed successfully');
+    });
+  </script>
+</body>
+</html>
