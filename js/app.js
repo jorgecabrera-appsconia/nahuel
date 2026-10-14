@@ -798,7 +798,7 @@ function initBookletNav() {
    ========================================================================== */
 const supabaseUrl = 'https://txozxnbkobqksijhhzjb.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4b3p4bmJrb2Jxa3NpamhoempiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0MTUxNzMsImV4cCI6MjEwNjk5MTE3M30.geTI6EpMDbv32ftgLbrd8-o6GwsbBbz7i9BxO3d1SvE';
-let supabase = null;
+let supabaseClient = null;
 
 function initAuth() {
   if (typeof window.supabase === 'undefined') {
@@ -806,7 +806,7 @@ function initAuth() {
     return;
   }
   
-  supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+  supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
   
   const authOverlay = document.getElementById('auth-overlay');
   const appContainer = document.getElementById('app-container');
@@ -848,19 +848,19 @@ function initAuth() {
   if (btnLogout) {
     btnLogout.addEventListener('click', async () => {
       if (confirm('¿Desea cerrar la sesión actual?')) {
-        await supabase.auth.signOut();
+        await supabaseClient.auth.signOut();
       }
     });
   }
 
   // Revisar si ya hay sesión activa
-  supabase.auth.getSession().then(({ data: { session } }) => {
+  supabaseClient.auth.getSession().then(({ data: { session } }) => {
     if (session) {
       showApp();
     }
   });
 
-  supabase.auth.onAuthStateChange((event, session) => {
+  supabaseClient.auth.onAuthStateChange((event, session) => {
     if (event === 'SIGNED_IN' || session) {
       showApp();
     } else if (event === 'SIGNED_OUT') {
@@ -907,7 +907,7 @@ function initAuth() {
       }
       
       try {
-        const { data, error } = await supabase.auth.signInWithPassword({
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
           email,
           password
         });
@@ -951,7 +951,7 @@ function initAuth() {
       }
       
       try {
-        const { data, error } = await supabase.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
           email,
           password,
           options: {
@@ -967,7 +967,7 @@ function initAuth() {
             showApp();
           } else {
             // Intentar inicio de sesión automático
-            const { data: loginData } = await supabase.auth.signInWithPassword({
+            const { data: loginData } = await supabaseClient.auth.signInWithPassword({
               email,
               password
             });

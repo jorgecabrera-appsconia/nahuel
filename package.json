@@ -1,0 +1,18 @@
+{
+  "name": "nahuel",
+  "version": "1.0.0",
+  "description": "Este repositorio contiene el material pedagógico, técnico y digital completo para el abordaje del tema **Cálculo de Caída de Tensión** según las normas **AEA 90364** e **IRAM / IEC 60364**.",
+  "main": "sw.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.64.0",
+    "@types/node": "^26.6.4"
+  }
+}
