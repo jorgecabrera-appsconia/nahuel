@@ -24,7 +24,7 @@ function initTabs() {
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetId = btn.getAttribute('data-tab');
-      
+
       tabButtons.forEach(b => b.classList.remove('active'));
       tabPanels.forEach(p => p.classList.remove('active'));
 
@@ -74,15 +74,15 @@ const SECCIONES_COMERCIALES = [1.5, 2.5, 4, 6, 10, 16, 25, 35, 50, 70, 95, 120, 
 const TABLA_IZ = {
   1.5: { mono: 15, tri: 13.5 },
   2.5: { mono: 21, tri: 18.5 },
-  4:   { mono: 28, tri: 25 },
-  6:   { mono: 36, tri: 32 },
-  10:  { mono: 50, tri: 44 },
-  16:  { mono: 66, tri: 58 },
-  25:  { mono: 88, tri: 77 },
-  35:  { mono: 109, tri: 96 },
-  50:  { mono: 131, tri: 117 },
-  70:  { mono: 166, tri: 149 },
-  95:  { mono: 202, tri: 180 },
+  4: { mono: 28, tri: 25 },
+  6: { mono: 36, tri: 32 },
+  10: { mono: 50, tri: 44 },
+  16: { mono: 66, tri: 58 },
+  25: { mono: 88, tri: 77 },
+  35: { mono: 109, tri: 96 },
+  50: { mono: 131, tri: 117 },
+  70: { mono: 166, tri: 149 },
+  95: { mono: 202, tri: 180 },
   120: { mono: 232, tri: 207 },
   150: { mono: 263, tri: 235 },
   185: { mono: 298, tri: 267 },
@@ -92,15 +92,15 @@ const TABLA_IZ = {
 function initCalculator() {
   const systemButtons = document.querySelectorAll('[data-system]');
   const loadModeButtons = document.querySelectorAll('[data-loadmode]');
-  
+
   const lengthSlider = document.getElementById('calc-length');
   const lengthDisplay = document.getElementById('length-val-display');
-  
+
   const currentInput = document.getElementById('calc-current');
   const powerInput = document.getElementById('calc-power');
   const powerUnit = document.getElementById('calc-power-unit');
   const cosphiInput = document.getElementById('calc-cosphi');
-  
+
   const materialSelect = document.getElementById('calc-material');
   const circuitUseSelect = document.getElementById('calc-circuit-use');
   const sectionSelect = document.getElementById('calc-section');
@@ -121,10 +121,10 @@ function initCalculator() {
       loadModeButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const mode = btn.getAttribute('data-loadmode');
-      
+
       const groupCurrent = document.getElementById('group-current');
       const groupPower = document.getElementById('group-power');
-      
+
       if (mode === 'current') {
         groupCurrent.style.display = 'block';
         groupPower.style.display = 'none';
@@ -170,7 +170,7 @@ function calculateVoltageDrop() {
   const S = parseFloat(document.getElementById('calc-section')?.value || 2.5);
   const rho = parseFloat(document.getElementById('calc-material')?.value || 0.021);
   const circuitLimit = parseFloat(document.getElementById('calc-circuit-use')?.value || 3.0);
-  
+
   // Determinación de la corriente (I)
   let I = 0;
   let cosphi = parseFloat(document.getElementById('calc-cosphi')?.value || 0.9);
@@ -504,7 +504,7 @@ function initSlides() {
 
   if (btnPrev) btnPrev.addEventListener('click', () => changeSlide(-1));
   if (btnNext) btnNext.addEventListener('click', () => changeSlide(1));
-  
+
   if (btnFullscreen) {
     btnFullscreen.addEventListener('click', togglePresentationFullscreen);
   }
@@ -552,7 +552,7 @@ function renderSlide(index) {
   const body = document.getElementById('slide-body');
   const notesText = document.getElementById('slide-notes-text');
   const counter = document.getElementById('slide-counter-display');
-  
+
   const btnPrev = document.getElementById('slide-btn-prev');
   const btnNext = document.getElementById('slide-btn-next');
 
@@ -621,7 +621,7 @@ const QUIZ_QUESTIONS = [
     diffLabel: "Avanzado • Caso de Taller",
     problem: `Un motor trifásico de <strong>15 kW</strong> (cosφ = 0.85, rendimiento = 0.90) a 380 V se instala a <strong>110 metros</strong> del Tablero Principal (ρ = 0.021). Sabiendo que ΔU_adm = 5%, calcule la sección teórica mínima exacta (S_mín en mm²).`,
     expectedSTeorica: 6.44, // P_in = 15000 / 0.9 = 16666.7 W. I = 16666.7 / (sqrt(3)*380*0.85) = 29.79 A.
-                           // S_min = (sqrt(3) * 0.021 * 110 * 29.79 * 0.85) / 19 = 6.44 mm² -> Comercial: 10 mm²
+    // S_min = (sqrt(3) * 0.021 * 110 * 29.79 * 0.85) / 19 = 6.44 mm² -> Comercial: 10 mm²
     tolerance: 0.35,
     unit: "mm²",
     hint: "Primero calcula P_eléctrica = P_mec / rendimiento, luego la corriente I, y finalmente S_mín.",
@@ -680,7 +680,7 @@ function renderQuizQuestion(idx) {
   if (qNumber) qNumber.textContent = `Desafío ${idx + 1} de ${QUIZ_QUESTIONS.length}`;
   if (problemText) problemText.innerHTML = q.problem;
   if (unitLabel) unitLabel.textContent = q.unit || (q.type === 'section' ? 'mm²' : '');
-  
+
   if (inputAnswer) {
     inputAnswer.value = '';
     inputAnswer.disabled = false;
@@ -797,7 +797,7 @@ function initBookletNav() {
    7. AUTENTICACIÓN CON SUPABASE
    ========================================================================== */
 const supabaseUrl = 'https://txozxnbkobqksijhhzjb.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR4b3p4bmJrb2Jxa3NpamhoempiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0MTUxNzMsImV4cCI6MjEwNjk5MTE3M30.geTI6EpMDbv32ftgLbrd8-o6GwsbBbz7i9BxO3d1SvE';
+const supabaseKey = 'sb_publishable_N5d5QLh9CZwUitypFtrztw_YVziOPaI';
 let supabaseClient = null;
 
 function initAuth() {
@@ -805,14 +805,14 @@ function initAuth() {
     console.error("Supabase SDK no cargado.");
     return;
   }
-  
+
   supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-  
+
   const authOverlay = document.getElementById('auth-overlay');
   const appContainer = document.getElementById('app-container');
   const errorMsg = document.getElementById('auth-error');
   const btnLogout = document.getElementById('btn-logout');
-  
+
   // Tabs y Botones
   const btnTabLogin = document.getElementById('btn-tab-login');
   const btnTabRegister = document.getElementById('btn-tab-register');
@@ -881,14 +881,14 @@ function initAuth() {
   function showError(msg) {
     if (!errorMsg) return;
     errorMsg.style.display = 'block';
-    
+
     // Traducir mensajes comunes de Supabase a español
     let text = msg;
     if (msg.includes('User already registered')) text = 'El correo electrónico ya se encuentra registrado.';
     else if (msg.includes('Invalid login credentials')) text = 'Correo electrónico o contraseña incorrectos.';
     else if (msg.includes('Password should be at least')) text = 'La contraseña debe tener al menos 6 caracteres.';
     else if (msg.includes('Unable to validate email')) text = 'Formato de correo electrónico inválido.';
-    
+
     errorMsg.textContent = text;
   }
 
@@ -897,15 +897,15 @@ function initAuth() {
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (errorMsg) errorMsg.style.display = 'none';
-      
+
       const email = document.getElementById('login-email').value.trim();
       const password = document.getElementById('login-password').value;
-      
+
       if (btnSubmitLogin) {
         btnSubmitLogin.disabled = true;
         btnSubmitLogin.textContent = 'Iniciando sesión...';
       }
-      
+
       try {
         const { data, error } = await supabaseClient.auth.signInWithPassword({
           email,
@@ -933,10 +933,10 @@ function initAuth() {
     registerForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (errorMsg) errorMsg.style.display = 'none';
-      
+
       const email = document.getElementById('reg-email').value.trim();
       const password = document.getElementById('reg-password').value;
-      
+
       const meta = {
         nombre: document.getElementById('reg-nombre').value.trim(),
         apellido: document.getElementById('reg-apellido').value.trim(),
@@ -944,12 +944,12 @@ function initAuth() {
         curso: document.getElementById('reg-curso').value.trim(),
         division: document.getElementById('reg-division').value.trim()
       };
-      
+
       if (btnSubmitRegister) {
         btnSubmitRegister.disabled = true;
         btnSubmitRegister.textContent = 'Registrando cuenta...';
       }
-      
+
       try {
         const { data, error } = await supabaseClient.auth.signUp({
           email,
