@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests', () => {
   test('page loads with auth overlay visible', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await expect(page).toHaveTitle(/Cálculo de Caída de Tensión/);
     // Auth overlay is present on initial load
     await expect(page.locator('#auth-overlay')).toBeVisible();
@@ -12,7 +12,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('auth flow - can switch tabs between login and register', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await expect(page.locator('#auth-overlay')).toBeVisible();
     // Switch to register tab
     await page.click('#btn-tab-register');
@@ -27,7 +27,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('main tab buttons exist in DOM', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await page.waitForTimeout(1500);
     // All main tab buttons exist in DOM regardless of auth state
     await expect(page.locator('.tab-btn[data-tab="calc-tab"]')).toBeTruthy();
@@ -38,7 +38,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('quiz section structure exists in DOM', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await page.waitForTimeout(1500);
     // Quiz section structure exists in DOM
     await expect(page.locator('.quiz-card')).toBeTruthy();
@@ -47,7 +47,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('slides section structure exists in DOM', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await page.waitForTimeout(1500);
     // Slide player container exists in DOM
     await expect(page.locator('.slide-player-container')).toBeTruthy();
@@ -56,7 +56,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('normativa table structure exists in DOM', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await page.waitForTimeout(1500);
     // Normativa table exists in DOM (multiple tables with same class)
     const tables = page.locator('.tech-table');
@@ -64,7 +64,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('cuadernillo cover sheet structure exists in DOM', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await page.waitForTimeout(1500);
     // Cover sheet exists in DOM
     await expect(page.locator('.cover-sheet')).toBeTruthy();
@@ -75,7 +75,7 @@ test.describe('Aplicación de Cálculo de Caída de Tensión - Playwright Tests'
   });
 
   test('calculator panel parameters exist in DOM', async ({ page }) => {
-    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/index.html');
+    await page.goto('file:///C:/Users/Usuario/Desktop/nahuel/app.html');
     await page.waitForTimeout(1500);
     // Calculator parameters exist in DOM
     await expect(page.locator('#calc-length')).toBeTruthy();

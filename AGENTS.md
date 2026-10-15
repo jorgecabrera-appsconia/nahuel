@@ -19,7 +19,8 @@
 c:\Users\Usuario\Desktop\nahuel\
 │
 ├── AGENTS.md                         <- [ESTE ARCHIVO] Instrucciones maestras para agentes
-├── index.html                        <- Portal Web principal integral (Simulador, Diapositivas, Cuadernillo, Quiz, Tablas)
+├── index.html                        <- Landing Page pública con CTA de instalación PWA
+├── app.html                          <- Portal Web principal integral (Simulador, Diapositivas, Cuadernillo, Quiz, Tablas)
 ├── cuadernillo.html                  <- Versión exclusiva e imprimible en A4 (con carátula técnica y transformador)
 ├── presentacion.html                 <- Vista standalone de diapositivas para cañón proyector o Smart TV de aula
 │
@@ -39,6 +40,11 @@ c:\Users\Usuario\Desktop\nahuel\
 
 ### Detalle de Responsabilidad de cada archivo:
 1. **`index.html`**:
+   - Landing page promocional del proyecto con diseño glassmorphism.
+   - CTA principal: botón "Instalar Aplicación" (PWA `beforeinstallprompt`).
+   - CTA secundario: botón "Usar en el navegador" que redirige a `app.html`.
+   - Secciones: Hero, Features (5 módulos), Tech Strip, Bottom CTA, Footer.
+2. **`app.html`**:
    - Contiene un sistema de pestañas (Tabs):
      - `calc-tab`: Calculadora / Simulador con feedback semafórico en tiempo real.
      - `slides-tab`: Reproductor de diapositivas con notas docentes y pantalla completa.
@@ -145,7 +151,7 @@ La sección comercial normalizada adoptada debe satisfacer **SIMULTÁNEAMENTE**:
 
 ### Tarea C: ¿Cómo modificar la Carátula del Cuadernillo?
 1. Para la versión impresa, edita `cuadernillo.html` dentro del contenedor `<div class="cover-sheet">`.
-2. Para el portal web, edita `index.html` dentro de `<div class="cover-sheet">` en la pestaña `#booklet-tab`.
+2. Para el portal web, edita `app.html` dentro de `<div class="cover-sheet">` en la pestaña `#booklet-tab`.
 3. La imagen del transformador se encuentra en `images/transformador.jpg`. Si se reemplaza la imagen, asegúrate de mantener la misma ruta o actualizar el atributo `src`.
 4. **IMPORTANTE:** En `cuadernillo.html`, la clase `.cover-sheet` tiene `page-break-after: always !important;`. Nunca elimines esta propiedad porque asegura que la carátula se imprima sola en la primera página.
 
@@ -165,7 +171,8 @@ Para levantar y verificar el proyecto localmente:
    python -m http.server 8080
    ```
 2. **Rutas Clave en el Navegador:**
-   - Portal maestro: `http://localhost:8080/index.html`
+   - Landing page: `http://localhost:8080/index.html`
+   - Portal maestro (app): `http://localhost:8080/app.html`
    - Cuadernillo con carátula para impresión A4: `http://localhost:8080/cuadernillo.html`
    - Presentación para aula: `http://localhost:8080/presentacion.html`
 3. **Checklist de Verificación Obligatoria:**

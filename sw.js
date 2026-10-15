@@ -2,6 +2,7 @@ const CACHE_NAME = 'caida-tension-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
+  './app.html',
   './cuadernillo.html',
   './presentacion.html',
   './css/styles.css',
@@ -38,7 +39,7 @@ self.addEventListener('fetch', (event) => {
   // HTML actualizado cuando hay conexión; la caché solo se usa como respaldo offline.
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match('./index.html'))
+      fetch(event.request).catch(() => caches.match('./app.html'))
     );
     return;
   }
